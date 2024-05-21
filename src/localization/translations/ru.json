@@ -1,0 +1,153 @@
+{
+    "language": "Русский язык",
+    "bottom_tab": {
+        "home": "Главная",
+        "orders": "Заказы",
+        "scan": "Трек-код",
+        "points": "Филиалы",
+        "profile": "Аккаунт",
+        "tasks": "Задачи",
+        "stock": "Склад"
+    },
+    "common": {
+        "type_client_number": "Введите номер клиента",
+        "type_phone": "Введите номер телефона",
+        "type_track_code": "Введите Трек-код",
+        "price": "Цена",
+        "weight": "Вес",
+        "kg": "кг",
+        "no_results": "Результатов нет",
+        "camera": "Камера",
+        "scaner": "Сканер",
+        "your_pickup_point": "Ваш ПВЗ",
+        "select_action": "Выберите действие",
+        "filter": "Фильтр",
+        "history": "История",
+        "stock_in": "Приход",
+        "stock_out": "Отпуск",
+        "execute": "Выполнить",
+        "selct_stock_out_option": "Выберите способ отпуска",
+        "stock_out_by_client_number": "Отпуск по ClientID",
+        "stock_out_by_track_code": "Отсканировать Трек-код",
+        "stock_out_by_phone_number": "Отпуск по номеру телефона",
+        "stock_out_by_client_number_manually": "Ручной ввод трек-кода",
+        "search": "Поиск",
+        "from": "из",
+        "sort": "Сортировать",
+        "what_scan": "Что будете сканировать?",
+        "parent": "Коробку",
+        "child": "Посылку",
+        "transactions": "Транзакции",
+        "total_items_shown": "Итого показано",
+        "total_items_price": "Цена итого",
+        "total_items_weight": "Вес итого",
+        "scan": "Сканировать",
+        "sign_in": "Авторизация",
+        "select_role": "Выберите тип пользователя",
+        "courier": "Курьер",
+        "pickup_point": "ПВЗ",
+        "distribution": "Сортировочный пункт",
+        "wellcome_text": "Добро пожаловать в приложение по распределению посылок. Пожалуйста, войдите в систему, чтобы управлять своим инвентарем.",
+        "enter_username": "Введите логин",
+        "enter_pass": "Введите пароль",
+        "login": "Войти",
+        "back": "Назад",
+        "contact_it": "Если возникли проблемы с авторизацией, напишите в отдел IT поддержки.",
+        "already_scanned": "Уже отсканировано",
+        "to_evidence": "Доказательство",
+        "evidence": "Доказательство",
+        "finish": "Завершить заказ",
+        "sign": "Подпись клиента",
+        "photo": "Фото-отчет",
+        "sticker": "Стикер",
+        "finished": "Заказ успешно выполнен!",
+        "sticker_finish": "Добавить стикер и завершить",
+        "status_for": "Статус для",
+        "save_finish": "Сохранить и завершить",
+        "changed_successfully": "успешно изменен",
+        "instruction": "Инструкции",
+        "scan_error": "Произошла ошибка вовремя сканирования"
+    },
+    "screens": {
+        "home": {
+            "title": "Инвентарь",
+            "wellcome": "Здравствуйте",
+            "choose_action": "Выберите действие, которое нужно выполнить",
+            "pick_up": "Взять",
+            "drop_off": "Отдать"
+        },
+        "tasks": {
+            "title": "Задачи"
+        },
+        "history": {
+            "title": "История"
+        },
+        "inventory": {
+            "title": "Инвентарь"
+        },
+        "profile": {
+            "title": "Настройки профиля",
+            "items": {
+                "personal_id": "Личное удостоверение",
+                "personal_data": "Личные данные",
+                "on_confirmation": "На подтверждении",
+                "confirmed": "Подтвержден",
+                "residence_address": "Адрес доставки",
+                "sign": "Подпись",
+                "language": "Язык",
+                "public_contract": "Публичный договор",
+                "personal_data_agreement": "Соглашение об использовании персональных данных",
+                "delete_accaunt": "Удалить учетную запись",
+                "choose_language": "Выбор языка",
+                "delete_accaunt_point_one": "Будут удалены персональные данные из базы данных 139 Express",
+                "delete_accaunt_point_two": "Будет закрыт доступ к заказам через мобильное приложение",
+                "sure_to_continue": "Уверен продолжить",
+                "cancel": "Отменить",
+                "delete": "Удалить",
+                "logout": "Выйти",
+                "passport_front": "Загрузите фото для отчета",
+                "passport_back": "Загрузите обратную сторону удостоверения",
+                "save": "Сохранить",
+                "uploaded": "Файлы загружены",
+                "address": "Адрес",
+                "phone": "Телефон",
+                "address_desc": "Введите адрес, по которому должен быть доставлен товар",
+                "city_area": "Город / Район",
+                "address_saved": "Ваш адрес сохранен",
+                "virtual_sign": "Электронная подпись",
+                "sign_desc": "Документы заказа требуют электронной подписи",
+                "sign_saved": "Ваша подпись сохранена",
+                "clean": "Очистить",
+                "edit": "Изменить",
+                "full_name": "ФИО",
+                "last_name": "Фамилия",
+                "first_name": "Имя",
+                "middle_name": "Отчество",
+                "birth_date": "Дата рождения",
+                "pinfl": "ПИНФЛ",
+                "document_number": "Номер паспорта",
+                "document_series": "Серия",
+                "clear": "Понятно"
+            }
+        },
+        "points": {
+            "title": "Филиалы",
+            "items": {
+                "arrived_at": "Прибыл в ПВЗ",
+                "filter": "Фильтр",
+                "point": "Филиал",
+                "all_points": "Все филиалы",
+                "no_points": "Нет филиалов",
+                "choose_place": "Выбрать город",
+                "show_in_map": "Филиал на карте",
+                "call": "Позвонить"
+            }
+        },
+        "search": {
+            "title": "Поиск по штрих-коду",
+            "items": {
+
+            }
+        }
+    }
+}

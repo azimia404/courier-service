@@ -1,0 +1,79 @@
+{
+    "language": "Кыргыз тили",
+    "bottom_tab": {
+        "home": "Башкы бет",
+        "orders": "Буйрутмалар",
+        "scan": "Трек-код",
+        "points": "Филиалдар",
+        "profile": "Аккаунт"
+    },
+    "common": {
+        "no_results": "Жыйынтык жок"
+    },
+    "screens": {
+        "profile": {
+            "title": "Профиль параметрлери",
+            "items": {
+                "personal_id": "Жеке күбөлүк",
+                "personal_data": "Жеке маалымат",
+                "on_confirmation": "Ырастоодо",
+                "confirmed": "Ырасталды",
+                "residence_address": "Жашаган дареги",
+                "sign": "Кол коюу",
+                "language": "Тил",
+                "public_contract": "Коомдук келишим",
+                "personal_data_agreement": "Жеке маалыматтарды пайдалануу боюнча келишим",
+                "delete_accaunt": "Каттоо эсебиңизди жок кылуу",
+                "choose_language": "Тил тандоо",
+                "delete_accaunt_point_one": "Жеке маалыматтар 139 Express маалымат базасынан жок кылынат",
+                "delete_accaunt_point_two": "Мобилдик тиркеме аркылуу буйрутмаларга кирүү жабылат",
+                "sure_to_continue": "Мен баарыбир улантам",
+                "cancel": "Баш тартуу",
+                "delete": "Жокко чыгаруу",
+                "logout": "Чыгуу",
+                "passport_front": "Паспорттун алдыңкы бөлүгүн жүктөңүз",
+                "passport_back": "Паспорттун арткы бөлүгүн жүктөңүз",
+                "save": "Сактоо",
+                "uploaded": "Файлдар жүктөлдү",
+                "address": "Дарек",
+                "phone": "Телефон",
+                "address_desc": "Жүк жеткириле турган даректи киргизиңиз",
+                "city_area": "Шаар / Район",
+                "address_saved": "Сиздин дарек сакталды",
+                "virtual_sign": "Электрондук кол коюу",
+                "sign_desc": "Буйрутма документтери электрондук кол коюуну талап кылат",
+                "sign_saved": "Сиздин кол тамгаңыз сакталды",
+                "clean": "Тазалоо",
+                "edit": "Өзгөртүү",
+                "full_name": "ФИО",
+                "last_name": "Фамилия",
+                "first_name": "Ысым",
+                "middle_name": "Атасынын аты",
+                "birth_date": "Туулган күнү",
+                "pinfl": "ПИНФЛ",
+                "document_number": "Паспорттун номери",
+                "document_series": "Серия",
+                "clear": "Түшүнүктүү"
+            }
+        },
+        "points": {
+            "title": "Филиалдар",
+            "items": {
+                "arrived_at": "Кабыл алуу пунктуна келди",
+                "filter": "Фильтр",
+                "point": "Филиал",
+                "all_points": "Бардык филиалдар",
+                "no_points": "Филиалдар жок",
+                "choose_place": "Шаарды тандоо",
+                "show_in_map": "Картада",
+                "call": "Чалуу"                
+            }
+        },
+        "search": {
+            "title": "Штрих-код боюнча издөө",
+            "items": {
+                
+            }
+        }
+    }
+}

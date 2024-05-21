@@ -1,0 +1,79 @@
+{
+    "language": "Қазақ тілі",
+    "bottom_tab": {
+        "home": "Басты бет",
+        "orders": "Тапсырыстар",
+        "scan": "Трек-код",
+        "points": "Филиалдар",
+        "profile": "Аккаунт"
+    },
+    "common": {
+        "no_results": "Нәтиже жоқ"
+    },
+    "screens": {
+        "profile": {
+            "title": "Профиль параметрлері",
+            "items": {
+                "personal_id": "Жеке куәлік",
+                "personal_data": "Жеке деректер",
+                "on_confirmation": "Растауда",
+                "confirmed": "Расталды",
+                "residence_address": "Жеткізу мекенжайы",
+                "sign": "Қол қою",
+                "language": "Тіл",
+                "public_contract": "Қоғамдық келісім",
+                "personal_data_agreement": "Жеке деректерді пайдалану туралы келісім",
+                "delete_accaunt": "Есептік жазбаңызды жою",
+                "choose_language": "Тіл таңдау",
+                "delete_accaunt_point_one": "Жеке деректер 139 Express дерекқорынан жойылады",
+                "delete_accaunt_point_two": "Мобильді қосымша арқылы тапсырыстарға қолжетімділік жабылады",
+                "sure_to_continue": "Мен жалғастыратыныма сенімдімін",
+                "cancel": "Бас тарту",
+                "delete": "Жою",
+                "logout": "Шығу",
+                "passport_front": "Жеке куәлігіңіздің алдыңғы жағын жүктеп салыңыз",
+                "passport_back": "Жеке куәлігіңіздің артқы жағын жүктеп салыңыз",
+                "save": "Сақтау",
+                "uploaded": "Файлдар жүктеп салынды",
+                "address": "Мекенжай",
+                "phone": "Телефон",
+                "address_desc": "Өнім жеткізілетін мекенжайды енгізіңіз",
+                "address_saved": "Сіздің мекенжайыңыз сақталды",
+                "city_area": "Қала / Аудан",
+                "virtual_sign": "Электрондық қолтаңба",
+                "sign_desc": "Тапсырыс құжаттары электронды қолтаңбаны талап етеді",
+                "sign_saved": "Сіздің қолтаңбаңыз сақталды",
+                "clean": "Тазалау",
+                "edit": "Өзгерту",
+                "full_name": "Толық аты",
+                "last_name": "Тегі",
+                "first_name": "Аты",
+                "middle_name": "Әкесінің аты",
+                "birth_date": "Туған күні",
+                "pinfl": "ПИНФЛ",
+                "document_number": "Паспорт нөмірі",
+                "document_series": "Серия",
+                "clear": "Түсінікті"
+            }
+        },
+        "points": {
+            "title": "Филиалдар",
+            "items": {
+                "arrived_at": "Қабылдау пунктіне келді",
+                "filter": "Сүзгі",
+                "point": "Филиал",
+                "all_points": "Барлық филиалдар",
+                "no_points": "Филиалдар жоқ",
+                "choose_place": "Қаланы таңдаңыз",
+                "show_in_map": "Картада",
+                "call": "Қоңырау"
+            }
+        },
+        "search": {
+            "title": "Штрих-код бойынша іздеу",
+            "items": {
+                
+            }
+        }
+    }
+}

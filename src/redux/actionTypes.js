@@ -1,0 +1,9 @@
+export const ADD_ORDER = "ADD_ORDER";
+export const DELETE_ORDER = "DELETE_ORDER";
+export const SET_ORDERS = "SET_ORDERS";
+export const MAIN = "MAIN";
+export const POINTS = "POINTS";
+export const ADD_ITEM = "ADD_ITEM";
+export const CLEAR_ITEMS = "CLEAR_ITEMS";
+export const ADD_TASK = "ADD_TASK";
+export const DELETE_TASK = "DELETE_TASK";
