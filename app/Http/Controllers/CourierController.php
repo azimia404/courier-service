@@ -14,7 +14,7 @@ class CourierController extends Controller
         // Get the sort option from the request, default to sorting by 'id'
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
-        $pagination = $request->input('pagination', 1);
+        $pagination = $request->input('pagination', 50);
 
         $currentPage = $request->input('page', 1);; // You can set this to any page you want to paginate to
 
@@ -32,7 +32,7 @@ class CourierController extends Controller
     {
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
-        $pagination = $request->input('pagination', 1);
+        $pagination = $request->input('pagination', 50);
 
         $currentPage = $request->input('page');; // You can set this to any page you want to paginate to
 
