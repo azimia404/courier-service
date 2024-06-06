@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourierController;
 /*
@@ -15,6 +16,8 @@ use App\Http\Controllers\CourierController;
 
 Route::get('/', [CourierController::class, 'index'])->name("couriers.index");
 Route::get('/couriers/sort', [CourierController::class, 'sort'])->name("couriers.sort");
+ 
+Route::get('locale/{locale}', [LanguageController::class,'setlang']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
