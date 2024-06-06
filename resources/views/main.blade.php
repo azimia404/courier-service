@@ -23,6 +23,7 @@
             display: flex;
             flex-direction: column;
             min-width: 15rem;
+            max-width: 15rem;
             margin-left: 0;
             transition: all 1s;
         }
