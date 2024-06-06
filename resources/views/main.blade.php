@@ -32,6 +32,20 @@
             width: 0;
             border: 0;
         }
+
+        .C-table-sort {
+            cursor: pointer;
+            transition: all 0.5s;
+        }
+
+        .C-table-sort:hover {
+            background-color: rgba(230, 230, 255, 0.5);
+        }
+
+        .C-table-sort:active {
+            transition: all 0s;
+            background-color: rgba(230, 230, 255, 0.75);
+        }
     </style>
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -84,8 +98,8 @@
 <body class="d-flex flex-column">
     <header class="navbar bg-body-tertiary">
         <div>
-            <a class="navbar-brand" href="#"><img style="max-width: 10rem" src="https://pda.139express.com/img/logo.png" alt="139express"></a>
-            <label for="C-focuser" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation" onclick="document.getElementById('sidebar').style.marginLeft = sidebarOpen ? '-15rem' : '0'; sidebarOpen = !sidebarOpen;">
+            <a class="navbar-brand" href="#"><img style="max-width: 10rem" src="https://pda.139express.com/img/logo.png" alt="{{ __('139express') }}"></a>
+            <label for="C-focuser" class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="{{ __('Toggle navigation') }}" onclick="document.getElementById('sidebar').style.marginLeft = sidebarOpen ? '-15rem' : '0'; sidebarOpen = !sidebarOpen;">
                 <span class="navbar-toggler-icon"></span>
             </label>
         </div>
@@ -94,120 +108,120 @@
         <nav class="C-sidebar bg-body-tertiary" id="sidebar">
             <input class="C-focuser" id="C-focuser" autofocus/>
             <ul class="list-unstyled">
-                <li class=""><button class="btn w-100 rounded-0" type="button">Home</button></li>
-                <li class=""><button class="btn w-100 rounded-0" type="button">Statuses</button></li>
+                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('Home') }}</button></li>
+                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('Statuses') }}</button></li>
                 <li class="">
                     <div class="dropdown">
                         <button class="btn w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown button
+                            {{ __('Dropdown button') }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="#">{{ __('Action') }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ __('Another action') }}</a></li>
+                            <li><a class="dropdown-item" href="#">{{ __('Something else here') }}</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class=""><button class="btn w-100 rounded-0" type="button">External</button></li>
+                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('External') }}</button></li>
             </ul>
         </nav>
-        <main>
+        <main class="flex-grow-1">
             <div class="container-fluid">
                 <div class="row justify-content-evenly px-4">
-                    <nav class="p-0" aria-label="breadcrumb">
+                    <nav class="p-0" aria-label="{{ __('breadcrumb') }}">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">Library</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Data</li>
+                            <li class="breadcrumb-item"><a href="#">{{ __('Home') }}</a></li>
+                            <li class="breadcrumb-item"><a href="#">{{ __('Library') }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('Data') }}</li>
                         </ol>
                     </nav>
                     <div class=" row justify-space-between p-0 mt-3">
                         <div class="col p-0">
-                            <button type="button" class="btn btn-success">Success</button>
-                            <button type="button" class="btn btn-primary">Activity</button>
-                            <button type="button" class="btn btn-secondary">Import</button>
-                            <button type="button" class="btn btn-primary">Send SMS</button>
+                            <button type="button" class="btn btn-success">{{ __('Success') }}</button>
+                            <button type="button" class="btn btn-primary">{{ __('Activity') }}</button>
+                            <button type="button" class="btn btn-secondary">{{ __('Import') }}</button>
+                            <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button>
                         </div>
-                        <div class="col-3"><input type="text" class="form-control " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1"></div>
+                        <div class="col-3"><input type="text" class="form-control " placeholder="{{ __('Search') }}" aria-label="{{ __('Search') }}" aria-describedby="basic-addon1"></div>
                     </div>
-                    <div class="p-0 d-flex">
+                    <!-- <div class="p-0 d-flex">
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Track Code
+                                {{ __('Track Code') }}
                             </button>
                             <div class="dropdown-menu pt-0">
                                 <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="Search" autofocus="autofocus">
+                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
                                 </form>
                                 <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">Action</button></li>
-                                    <li><button class="dropdown-item" type="button">Another action</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Picked UP
+                                {{ __('Picked UP') }}
                             </button>
                             <div class="dropdown-menu pt-0">
                                 <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="Search" autofocus="autofocus">
+                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
                                 </form>
                                 <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">Action</button></li>
-                                    <li><button class="dropdown-item" type="button">Another action</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropped Off
+                                {{ __('Dropped Off') }}
                             </button>
                             <div class="dropdown-menu pt-0">
                                 <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="Search" autofocus="autofocus">
+                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
                                 </form>
                                 <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">Action</button></li>
-                                    <li><button class="dropdown-item" type="button">Another action</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="dropdown">
                             <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Time Difference
+                                {{ __('Time Difference') }}
                             </button>
                             <div class="dropdown-menu pt-0">
                                 <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="Search" autofocus="autofocus">
+                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
                                 </form>
                                 <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">Action</button></li>
-                                    <li><button class="dropdown-item" type="button">Another action</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
-                                    <li><button class="dropdown-item" type="button">Something else here</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
+                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="card bg-lightp-0 p-0">
+                    </div> -->
+                    <div class="card bg-lightp-0 p-0 mt-3">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <div>
-                                <h4><b>Couriers</b></h4>
+                                <h4><b>{{ __('Couriers') }}</b></h4>
                             </div>
                             <div>
                             </div>
@@ -219,10 +233,10 @@
                                         <th class="custom d-none">
                                             <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
                                         </th>
-                                        <th data-sort="name" data-order="asc">Account</th>
-                                        <th data-sort="delivered" data-order="asc">Delivered</th>
-                                        <th data-sort="in_progress" data-order="asc">In progress</th>
-                                        <th data-sort="failed" data-order="asc">Failed</th>
+                                        <th class="C-table-sort" data-sort="name" data-order="asc">{{ __('Account') }}</th>
+                                        <th class="C-table-sort" data-sort="delivered" data-order="asc">{{ __('Delivered') }}</th>
+                                        <th class="C-table-sort" data-sort="in_progress" data-order="asc">{{ __('In progress') }}</th>
+                                        <th class="C-table-sort" data-sort="failed" data-order="asc">{{ __('Failed') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -250,7 +264,7 @@
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <div>
-                            Show
+                            {{ __('Show') }}
                             <div class="btn-group dropup">
                                 <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{$pagination}}
@@ -269,7 +283,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <nav aria-label="Page navigation example" id="pagination">
+                        <nav aria-label="{{ __('Page navigation example') }}" id="pagination">
                             {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
                         </nav>
                     </div>
