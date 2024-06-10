@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Item;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class CourierSeeder extends Seeder
+class ItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +14,6 @@ class CourierSeeder extends Seeder
      */
     public function run()
     {
-        
+        Item::factory()->count(100)->create();
     }
 }

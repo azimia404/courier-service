@@ -172,13 +172,6 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <?php
-                            $mysql = new mysqli("localhost", "root", "", "practice");
-                            if($mysql->connect_error){
-                                echo "fuck you";
-                            }
-                            $mysql->close();
-                        ?>
                             <table class="table">
                                 <tbody>
                                     <tr>

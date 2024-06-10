@@ -119,6 +119,8 @@
         <main class="flex-grow-1">
             <div class="container-fluid">
                 <div class="row justify-content-evenly px-4 py-3">
+
+                    <!-- Content -->
                     @yield('content');
                     
                 </div>
