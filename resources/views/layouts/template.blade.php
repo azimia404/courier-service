@@ -10,51 +10,6 @@
     <title>Interface</title>
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('th').on('click', function () {
-                let sortField = $(this).data('sort');
-                let sortOrder = $(this).data('order');
-
-                $.ajax({
-                    url: '{{ route('couriers.sort') }}',
-                    type: 'GET',
-                    data: {
-                        sort: sortField,
-                        order: sortOrder,
-                        pagination: {{$pagination}},
-                        page: {{$_GET["page"] ?? 1}}
-                    },
-                    success: (response) => {
-                        console.dir(response);
-                        let rows = '';
-                        $.each(response.data, function (index, courier) {
-                            rows += '<tr>';
-                            rows += '<td>' + courier.name + '</td>';
-                            rows += '<td>' + courier.delivered + '</td>';
-                            rows += '<td>' + courier.in_progress + '</td>';
-                            rows += '<td>' + courier.failed + '</td>';
-                            rows += '</tr>';
-                        });
-                        $('tbody').html(rows);
-
-                        // Toggle the sort order for the next click
-                        if (sortOrder === 'asc') {
-                            $(this).data('order', 'desc');
-                            $(this).attr('data-order', 'desc');
-
-                        } else {
-                            $(this).data('order', 'asc');
-                            $(this).attr('data-order', 'asc');
-                        }
-
-                    }
-                });
-            });
-        });
-
-        let sidebarOpen = true;
-    </script>
     <link href="{{ URL::asset('css/app.css') }}" rel="stylesheet" type="text/css"/>
 </head>
 

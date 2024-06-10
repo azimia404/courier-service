@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Courier;
 use \Illuminate\Pagination\Paginator;
@@ -15,7 +16,7 @@ class CourierController extends Controller
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
         $pagination = $request->input('pagination', 50);
-
+        $courierId = $request->input('courierId', null);
         $currentPage = $request->input('page', 1);; // You can set this to any page you want to paginate to
 
         // Make sure that you call the static method currentPageResolver()
@@ -26,7 +27,7 @@ class CourierController extends Controller
 
         // Fetch and sort the couriers
         $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
-        return view("main", compact("couriers", 'sortField', 'sortOrder', 'pagination'));
+        return view("main", compact("couriers", 'sortField', 'sortOrder', 'pagination', 'courierId'));
     }
     public function sort(Request $request)
     {
@@ -44,5 +45,25 @@ class CourierController extends Controller
         
         $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
         return response()->json($couriers);
+    }
+    public function items(Request $request)
+    {
+        // Get the sort option from the request, default to sorting by 'id'
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
+        $pagination = $request->input('pagination', 50);
+        $courierId = $request->input('courierId', null);
+        $currentPage = $request->input('page', 1);; // You can set this to any page you want to paginate to
+
+        // Make sure that you call the static method currentPageResolver()
+        // before querying users
+        Paginator::currentPageResolver(function () use ($currentPage) {
+            return $currentPage;
+        });
+
+        // Fetch and sort the couriers
+        $info = Item::where('courier_id','=', $courierId)->paginate($pagination);
+        $request->fullUrlWithQuery(['courierId' => $courierId]);
+        return response()->json($info);
     }
 }
