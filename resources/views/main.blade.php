@@ -14,8 +14,10 @@
         <button type="button" class="btn btn-secondary">{{ __('Import') }}</button>
         <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button>
     </div>
-    <div class="col-3"><input type="text" class="form-control " placeholder="{{ __('Search') }}"
-            aria-label="{{ __('Search') }}" aria-describedby="basic-addon1"></div>
+    <form class="col-3" id="searchTrackCodeForm">
+        <input id="search" type="text" class="form-control " placeholder="{{ __('Search') }}"
+            aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
+    </form>
 </div>
 <!-- <div class="p-0 d-flex">
                         <div class="dropdown">
@@ -91,7 +93,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <script>
+<script>
     $(document).ready(function () {
         $('th').on('click', function () {
             let sortField = $(this).data('sort');
@@ -133,10 +135,10 @@
             });
         });
     });
-
+    let courierId;
     $(document).ready(function () {
         $('.C-courier-list-item').on('click', function () {
-            let coruierId = $(this).data('id');
+            coruierId = $(this).data('id');
             $.ajax({
                 url: '{{ route('courier.items') }}',
                 type: 'GET',
@@ -155,10 +157,15 @@
                         rows += '<td>' + "N/A" + '</td>';
                         rows += '</tr>';
                     });
-                    $('.C-courier-items-list > tbody').html(rows);
                     $('#items_tbody').html(rows);
 
-                    
+                    let url = new URL(window.location.href);
+
+                    // Adding param to url
+                    url.searchParams.set('courier_id', coruierId);
+
+                    // Update the URL in the address bar without reloading the page
+                    history.pushState({}, '', url);
                 }
             });
         });
@@ -200,8 +207,44 @@
                         $(this).attr('data-order', 'asc');
                     }
 
+
                 }
             });
+        });
+    });
+    $(document).ready(function () {
+        $('#search').on('keyup', function (e) {
+            var keyword = $('#search').val();
+
+            $.ajax({
+                url: '{{ route('courier.items.search') }}',
+                type: 'GET',
+                data: {
+                    track_code: keyword,
+                    courier_id: {{$_GET["courier_id"] ?? 0}}
+                },
+                success: (response) => {
+                    console.dir(response);
+
+                    // Fill the table
+                    let rows = '';
+                    $.each(response, function (index, item) {
+                        rows += '<tr>';
+                        rows += '<td>' + item.track_code + '</td>';
+                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
+                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
+                        rows += '<td>' + "N/A" + '</td>';
+                        rows += '</tr>';
+                    });
+
+                    $('#items_tbody').html(rows);
+                }
+            });
+        });
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevents the default form submission behavior.
+            // Your form submission logic here.
         });
     });
 
@@ -258,10 +301,10 @@
                             <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
                         </th>
                         <th class="C-table-sort" data-sort="name" data-order="asc">
-                            {{ __('Item') }}
+                            {{ __('Track Code') }}
                         </th>
                         <th class="C-table-sort" data-sort="delivered" data-order="asc">
-                            {{ __('Picked up') }}
+                            {{ __('Picked Up') }}
                         </th>
                         <th class="C-table-sort" data-sort="in_progress" data-order="asc">
                             {{ __('Dropped Off') }}

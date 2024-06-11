@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FilterItemsRequest;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Courier;
@@ -65,5 +66,27 @@ class CourierController extends Controller
         $info = Item::where('courier_id','=', $courierId)->paginate($pagination);
         $request->fullUrlWithQuery(['courierId' => $courierId]);
         return response()->json($info);
+    }
+    public function search(FilterItemsRequest $request)
+    {
+        $data = $request->validated();
+
+        $query = Item::query();
+
+        // Form request
+        if(isset($data['track_code'])){
+            $query->where('track_code','like','%'.$data['track_code'].'%');
+        }
+
+        if(isset($data['picked_up'])){}
+
+        if(isset($data['dropped_off'])){}
+
+        $query->where('courier_id','=',$data['courier_id']);
+
+        $items = $query->get();
+
+        // Fetch and sort the couriers
+        return response()->json($items);
     }
 }

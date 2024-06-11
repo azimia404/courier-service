@@ -1585,6 +1585,7 @@ body {
 }
 
 .C-table-sort {
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.5s;
 }
