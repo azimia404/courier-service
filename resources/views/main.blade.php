@@ -95,7 +95,7 @@
                     </div> -->
 <script>
     $(document).ready(function () {
-        $('th').on('change', function () {
+        $('th').on('click', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -216,7 +216,7 @@
         });
     });
     $(document).ready(function () {
-        $('#search').on('change', function (e) {
+        $('#search').on('keyup', function (e) {
             // Keyword
             var keyword = $('#search').val();
 
