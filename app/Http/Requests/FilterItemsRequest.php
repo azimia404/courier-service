@@ -24,6 +24,7 @@ class FilterItemsRequest extends FormRequest
     public function rules()
     {
         return [
+            "courierId"=> "integer",
             "courier_id"=> "integer",
             "track_code"=> "string",
             "picked_up"=> "",

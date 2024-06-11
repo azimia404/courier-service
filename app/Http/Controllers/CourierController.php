@@ -17,7 +17,7 @@ class CourierController extends Controller
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
         $pagination = $request->input('pagination', 50);
-        $courierId = $request->input('courierId', null);
+        $courier_id = $request->input('courier_id', null);
         $currentPage = $request->input('page', 1);; // You can set this to any page you want to paginate to
 
         // Make sure that you call the static method currentPageResolver()
@@ -28,7 +28,7 @@ class CourierController extends Controller
 
         // Fetch and sort the couriers
         $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
-        return view("main", compact("couriers", 'sortField', 'sortOrder', 'pagination', 'courierId'));
+        return view("main", compact("couriers", 'sortField', 'sortOrder', 'pagination', 'courier_id'));
     }
     public function sort(Request $request)
     {
@@ -53,7 +53,7 @@ class CourierController extends Controller
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
         $pagination = $request->input('pagination', 50);
-        $courierId = $request->input('courierId', null);
+        $courier_id = $request->input('courier_id', null);
         $currentPage = $request->input('page', 1);; // You can set this to any page you want to paginate to
 
         // Make sure that you call the static method currentPageResolver()
@@ -63,8 +63,8 @@ class CourierController extends Controller
         });
 
         // Fetch and sort the couriers
-        $info = Item::where('courier_id','=', $courierId)->paginate($pagination);
-        $request->fullUrlWithQuery(['courierId' => $courierId]);
+        $info = Item::where('courier_id','=', $courier_id)->paginate($pagination);
+        $request->fullUrlWithQuery(['courier_id' => $courier_id]);
         return response()->json($info);
     }
     public function search(FilterItemsRequest $request)
@@ -82,7 +82,12 @@ class CourierController extends Controller
 
         if(isset($data['dropped_off'])){}
 
-        $query->where('courier_id','=',$data['courier_id']);
+
+        
+        if(isset($data['courier_id'])){
+            $query->where('courier_id','=',$data['courier_id']);
+        }
+        
 
         $items = $query->get();
 

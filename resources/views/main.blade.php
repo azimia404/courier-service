@@ -135,7 +135,7 @@
             });
         });
     });
-    let courierId;
+    let courier_id;
     $(document).ready(function () {
         $('.C-courier-list-item').on('click', function () {
             coruierId = $(this).data('id');
@@ -144,7 +144,7 @@
                 type: 'GET',
                 data: {
                     pagination: {{$pagination}},
-                    courierId: coruierId,
+                    courier_id: coruierId,
                     page: {{$_GET["page"] ?? 1}}
                     },
                 success: (response) => {
@@ -216,15 +216,21 @@
         $('#search').on('keyup', function (e) {
             var keyword = $('#search').val();
 
+            let url = new URL(window.location.href);
+
+            // Adding param to url
+            let id = url.searchParams.get("courier_id");
+
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
                     track_code: keyword,
-                    courier_id: {{$_GET["courier_id"] ?? 0}}
+                    courier_id: id
                 },
                 success: (response) => {
                     console.dir(response);
+                    console.dir(id);
 
                     // Fill the table
                     let rows = '';
