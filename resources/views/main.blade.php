@@ -216,7 +216,7 @@
         });
     });
     $(document).ready(function () {
-        $('#search').on('keyup', function (e) {
+        $('#search').on('change', function (e) {
             // Keyword
             var keyword = $('#search').val();
 
