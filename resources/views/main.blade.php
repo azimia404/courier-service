@@ -248,7 +248,7 @@
                 url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
-                    track_code: keyword,
+                    track_code: keyword ? keyword : undefined,
                     courier_id: id,
                     sortItem: sortField,
                     orderItem: sortOrder,
