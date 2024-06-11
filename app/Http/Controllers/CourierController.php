@@ -81,13 +81,15 @@ class CourierController extends Controller
         if(isset($data['picked_up'])){}
 
         if(isset($data['dropped_off'])){}
-
-
         
         if(isset($data['courier_id'])){
             $query->where('courier_id','=',$data['courier_id']);
         }
-        
+
+            // Sorting
+        if(isset($data['orderItem']) && isset($data['sortItem'])){
+            $query->orderBy($data['sortItem'], $data['orderItem']);
+        }
 
         $items = $query->get();
 

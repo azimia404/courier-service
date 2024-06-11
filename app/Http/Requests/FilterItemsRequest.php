@@ -26,6 +26,8 @@ class FilterItemsRequest extends FormRequest
         return [
             "courierId"=> "integer",
             "courier_id"=> "integer",
+            "sortItem"=> "string",
+            "orderItem"=> "string",
             "track_code"=> "string",
             "picked_up"=> "",
             "dropped_off"=> "",

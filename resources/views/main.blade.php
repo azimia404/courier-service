@@ -95,7 +95,7 @@
                     </div> -->
 <script>
     $(document).ready(function () {
-        $('th').on('click', function () {
+        $('th').on('change', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -148,6 +148,8 @@
                     page: {{$_GET["page"] ?? 1}}
                     },
                 success: (response) => {
+            console.log('.C-courier-list-item');
+
                     let rows = '';
                     $.each(response.data, function (index, item) {
                         rows += '<tr>';
@@ -171,7 +173,7 @@
         });
     });
     $(document).ready(function () {
-        $('th').on('click', function () {
+        $('#couriers_table th').on('click', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -185,6 +187,7 @@
                     page: {{$_GET["page"] ?? 1}}
                     },
                 success: (response) => {
+            console.log('#couriers-tbody th');
                     console.dir(response);
                     let rows = '';
                     $.each(response.data, function (index, courier) {
@@ -214,21 +217,44 @@
     });
     $(document).ready(function () {
         $('#search').on('keyup', function (e) {
+            // Keyword
             var keyword = $('#search').val();
 
+            // Get params from URL
             let url = new URL(window.location.href);
-
-            // Adding param to url
             let id = url.searchParams.get("courier_id");
+
+            // Get sorting
+            if(!url.searchParams.get("sort")){
+                    // Adding param to url
+                    url.searchParams.set('sortItem', 'track_code');
+                    // Update the URL in the address bar without reloading the page
+                    history.pushState({}, '', url);
+            };
+
+            // Get sorting
+            if(!url.searchParams.get("order")){
+                    // Adding param to url
+                    url.searchParams.set('orderItem', 'asc');
+                    // Update the URL in the address bar without reloading the page
+                    history.pushState({}, '', url);
+            };
+            
+            // Sorting
+            let sortField = url.searchParams.get("sortItem");
+            let sortOrder = url.searchParams.get("orderItem");
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
                     track_code: keyword,
-                    courier_id: id
+                    courier_id: id,
+                    sortItem: sortField,
+                    orderItem: sortOrder,
                 },
                 success: (response) => {
+            console.log('#search');
                     console.dir(response);
                     console.dir(id);
 
@@ -254,11 +280,69 @@
         });
     });
 
+    // Setting sort for items
+    $(document).ready(function () {
+        $('#items_table th').on('click', function () {
+            var keyword = $('#search').val();
+
+            // Get params from URL
+            let url = new URL(window.location.href);
+            let id = url.searchParams.get("courier_id");
+
+            // Sorting
+            let sortField = $(this).data('sort');
+            let sortOrder = $(this).data('order');
+            
+            url.searchParams.set('sortItem', sortField);
+                    url.searchParams.set('orderItem', sortOrder);
+                    // Update the URL in the address bar without reloading the page
+                    history.pushState({}, '', url);
+
+            $.ajax({
+                url: '{{ route('courier.items.search') }}',
+                type: 'GET',
+                data: {
+                    track_code: keyword ? keyword : undefined,
+                    courier_id: id,
+                    sortItem: sortField,
+                    orderItem: sortOrder,
+                    },
+                success: (response) => {
+                    console.log('#items_table th');
+                    console.dir(response);
+
+                    let rows = '';
+                    $.each(response, function (index, item) {
+                        rows += '<tr>';
+                        rows += '<td>' + item.track_code + '</td>';
+                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
+                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
+                        rows += '<td>' + "N/A" + '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#items_tbody').html(rows);
+
+                    // Toggle the sort order for the next click
+                    if (sortOrder === 'asc') {
+                        $(this).data('order', 'desc');
+                        $(this).attr('data-order', 'desc');
+
+                    } else {
+                        $(this).data('order', 'asc');
+                        $(this).attr('data-order', 'asc');
+                    }
+
+
+                }
+            });
+        });
+    });
+
 </script>
 <div class="d-flex gap-4">
     <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
-        <div class="card-body p-0 col">
-            <table class="table C-table-list col">
+        <div class="card-body p-0 col" >
+            <table class="table C-table-list col"  id="couriers_table">
                 <thead>
                     <tr class="C-list-item">
                         <th class="custom d-none">
@@ -300,22 +384,22 @@
 
     <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
         <div class="card-body p-0 col">
-            <table class="table C-table-list col C-courier-items-list">
+            <table class="table C-table-list col C-courier-items-list" id="items_table">
                 <thead>
                     <tr class="C-list-item">
                         <th class="custom d-none">
                             <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
                         </th>
-                        <th class="C-table-sort" data-sort="name" data-order="asc">
+                        <th class="C-table-sort" data-sort="track_code" data-order="asc">
                             {{ __('Track Code') }}
                         </th>
-                        <th class="C-table-sort" data-sort="delivered" data-order="asc">
+                        <th class="C-table-sort" data-sort="picked_up" data-order="asc">
                             {{ __('Picked Up') }}
                         </th>
-                        <th class="C-table-sort" data-sort="in_progress" data-order="asc">
+                        <th class="C-table-sort" data-sort="dropped_off" data-order="asc">
                             {{ __('Dropped Off') }}
                         </th>
-                        <th class="C-table-sort" data-sort="failed" data-order="asc">
+                        <th class="C-table-sort" data-sort="time_difference" data-order="asc">
                             {{ __('Time Difference') }}
                         </th>
                     </tr>
