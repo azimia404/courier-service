@@ -94,8 +94,83 @@
                         </div>
                     </div> -->
 <script>
+    function correctItemPaginationLinks() {
+        $('#items_pagination a').on('click', function (e) {
+            e.preventDefault();
+
+
+            // Keyword
+            var keyword = $('#search').val();
+
+            // Get params from URL
+            let url = new URL(window.location.href);
+            let id = url.searchParams.get("courier_id");
+
+            // Get sorting
+            if (!url.searchParams.get("sort")) {
+                // Adding param to url
+                url.searchParams.set('sortItem', 'track_code');
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
+            };
+
+            // Get sorting
+            if (!url.searchParams.get("order")) {
+                // Adding param to url
+                url.searchParams.set('orderItem', 'asc');
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
+            };
+
+            // Get paginationItems
+            if (!url.searchParams.get("paginationItems")) {
+                // Adding param to url
+                url.searchParams.set('paginationItems', 5);
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
+            };
+
+            // Sorting
+            let sortField = url.searchParams.get("sortItem");
+            let sortOrder = url.searchParams.get("orderItem");
+            let paginationItems = url.searchParams.get('paginationItems');
+            let page_items = url.searchParams.get('page_items');
+
+            console.log("correcting items links")
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'GET',
+                data: {
+                    track_code: keyword ? keyword : undefined,
+                    courier_id: id,
+                    sortItem: sortField,
+                    orderItem: sortOrder,
+                    paginationItems: paginationItems,
+                },
+                success: (response) => {
+                    console.dir("#items_pagination a");
+                    console.dir(response);
+
+
+                    let rows = '';
+                    $.each(response.data, function (index, item) {
+                        rows += '<tr>';
+                        rows += '<td>' + item.track_code + '</td>';
+                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
+                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
+                        rows += '<td>' + "N/A" + '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#items_tbody').html(rows);
+                    $('#items_pagination').html(response.linksHTML);
+                    correctItemPaginationLinks()
+                }
+            });
+        });
+    }
+
     $(document).ready(function () {
-        $('th').on('click', function () {
+        $('#couriers_table th').on('click', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -148,7 +223,7 @@
                     page: {{$_GET["page"] ?? 1}}
                     },
                 success: (response) => {
-            console.log('.C-courier-list-item');
+                    console.log('.C-courier-list-item');
 
                     let rows = '';
                     $.each(response.data, function (index, item) {
@@ -160,11 +235,15 @@
                         rows += '</tr>';
                     });
                     $('#items_tbody').html(rows);
+                    $('#items_pagination').html(response.linksHTML);
+                    correctItemPaginationLinks()
 
                     let url = new URL(window.location.href);
 
                     // Adding param to url
                     url.searchParams.set('courier_id', coruierId);
+                    console.dir(response);
+                    console.dir(response.links);
 
                     // Update the URL in the address bar without reloading the page
                     history.pushState({}, '', url);
@@ -187,7 +266,7 @@
                     page: {{$_GET["page"] ?? 1}}
                     },
                 success: (response) => {
-            console.log('#couriers-tbody th');
+                    console.log('#couriers-tbody th');
                     console.dir(response);
                     let rows = '';
                     $.each(response.data, function (index, courier) {
@@ -209,6 +288,10 @@
                         $(this).data('order', 'asc');
                         $(this).attr('data-order', 'asc');
                     }
+                    
+                    $('#items_pagination').html(response.linksHTML);
+                    console.dir(response.linksHTML);
+                    correctItemPaginationLinks()
 
 
                 }
@@ -225,24 +308,42 @@
             let id = url.searchParams.get("courier_id");
 
             // Get sorting
-            if(!url.searchParams.get("sort")){
-                    // Adding param to url
-                    url.searchParams.set('sortItem', 'track_code');
-                    // Update the URL in the address bar without reloading the page
-                    history.pushState({}, '', url);
+            if (!url.searchParams.get("sort")) {
+                // Adding param to url
+                url.searchParams.set('sortItem', 'track_code');
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
             };
 
             // Get sorting
-            if(!url.searchParams.get("order")){
-                    // Adding param to url
-                    url.searchParams.set('orderItem', 'asc');
-                    // Update the URL in the address bar without reloading the page
-                    history.pushState({}, '', url);
+            if (!url.searchParams.get("order")) {
+                // Adding param to url
+                url.searchParams.set('orderItem', 'asc');
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
             };
-            
+
+            // Get page_items
+            if (!url.searchParams.get("page_items")) {
+                // Adding param to url
+                url.searchParams.set('page_items', 1);
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
+            };
+
+            // Get paginationItems
+            if (!url.searchParams.get("paginationItems")) {
+                // Adding param to url
+                url.searchParams.set('paginationItems', 5);
+                // Update the URL in the address bar without reloading the page
+                history.pushState({}, '', url);
+            };
+
             // Sorting
             let sortField = url.searchParams.get("sortItem");
             let sortOrder = url.searchParams.get("orderItem");
+            let paginationItems = url.searchParams.get('paginationItems');
+            let page_items = url.searchParams.get('page_items');
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
@@ -252,15 +353,17 @@
                     courier_id: id,
                     sortItem: sortField,
                     orderItem: sortOrder,
+                    paginationItems: paginationItems,
+                    page_items: page_items,
                 },
                 success: (response) => {
-            console.log('#search');
+                    console.log('#search');
                     console.dir(response);
                     console.dir(id);
 
                     // Fill the table
                     let rows = '';
-                    $.each(response, function (index, item) {
+                    $.each(response.data, function (index, item) {
                         rows += '<tr>';
                         rows += '<td>' + item.track_code + '</td>';
                         rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
@@ -270,6 +373,9 @@
                     });
 
                     $('#items_tbody').html(rows);
+                    $('#items_pagination').html(response.linksHTML);
+                    console.dir(response.linksHTML);
+                    correctItemPaginationLinks()
                 }
             });
         });
@@ -289,14 +395,32 @@
             let url = new URL(window.location.href);
             let id = url.searchParams.get("courier_id");
 
+            // Get sorting
+            if (!url.searchParams.get("page_items")) {
+                // Adding param to url
+                url.searchParams.set('page_items', 1);
+                // Update the URL in the address bar without reloading the page
+            };
+
+            // Get sorting
+            if (!url.searchParams.get("paginationItems")) {
+            console.log('resetting pagitems')
+                // Adding param to url
+                url.searchParams.set('paginationItems', 5);
+                // Update the URL in the address bar without reloading the page
+            };
+            history.pushState({}, '', url);
+
             // Sorting
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
-            
+            let paginationItems = url.searchParams.get('paginationItems');
+            let page_items = url.searchParams.get('page_items');
+
             url.searchParams.set('sortItem', sortField);
-                    url.searchParams.set('orderItem', sortOrder);
-                    // Update the URL in the address bar without reloading the page
-                    history.pushState({}, '', url);
+            url.searchParams.set('orderItem', sortOrder);
+            // Update the URL in the address bar without reloading the page
+            history.pushState({}, '', url);
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
@@ -306,13 +430,15 @@
                     courier_id: id,
                     sortItem: sortField,
                     orderItem: sortOrder,
-                    },
+                    paginationItems: paginationItems,
+                    page_items: page_items,
+                },
                 success: (response) => {
                     console.log('#items_table th');
                     console.dir(response);
 
                     let rows = '';
-                    $.each(response, function (index, item) {
+                    $.each(response.data, function (index, item) {
                         rows += '<tr>';
                         rows += '<td>' + item.track_code + '</td>';
                         rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
@@ -321,6 +447,8 @@
                         rows += '</tr>';
                     });
                     $('#items_tbody').html(rows);
+                    $('#items_pagination').html(response.linksHTML);
+                    correctItemPaginationLinks()
 
                     // Toggle the sort order for the next click
                     if (sortOrder === 'asc') {
@@ -341,8 +469,8 @@
 </script>
 <div class="d-flex gap-4">
     <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
-        <div class="card-body p-0 col" >
-            <table class="table C-table-list col"  id="couriers_table">
+        <div class="card-body p-0 col">
+            <table class="table C-table-list col m-0" id="couriers_table">
                 <thead>
                     <tr class="C-list-item">
                         <th class="custom d-none">
@@ -379,12 +507,15 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}" id="pagination">
+                {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
+            </div>
         </div>
     </div>
 
     <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
         <div class="card-body p-0 col">
-            <table class="table C-table-list col C-courier-items-list" id="items_table">
+            <table class="table C-table-list col C-courier-items-list m-0" id="items_table">
                 <thead>
                     <tr class="C-list-item">
                         <th class="custom d-none">
@@ -404,10 +535,10 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody id="items_tbody">
-
-                </tbody>
+                <tbody id="items_tbody"></tbody>
             </table>
+            <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}"
+                id="items_pagination"></div>
         </div>
     </div>
 
@@ -454,9 +585,6 @@
             </ul>
         </div>
     </div>
-    <nav aria-label="{{ __('Page navigation example') }}" id="pagination">
-        {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
-    </nav>
 </div>
 
 
