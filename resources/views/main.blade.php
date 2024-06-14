@@ -118,6 +118,7 @@
         });
         $('#items_tbody').html(rows);
         $('#items_pagination').html(response.linksHTML);
+        correctItemPaginationLinks();
     }
 
     function correctItemShow() {
@@ -184,6 +185,32 @@
                     console.dir(response);
                     deployItemsList(response);
                     correctItemPaginationLinks();
+                }
+            });
+        });
+    }
+    function correctCourierPaginationLinks() {
+        $('#pagination a').on('click', function (e) {
+            console.log('Correcting courier links');
+            e.preventDefault();
+
+            let data = checkURLData();
+
+            let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                data: {
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                },
+                success: (response) => {
+                    console.dir(response);
+                    deployCourierList(response);
+                    correctCourierPaginationLinks();
                 }
             });
         });
@@ -278,6 +305,7 @@
 
 
     $(document).ready(function () {
+        correctItemShow();
         $('.C-courier-list-item').on('click', function () {
             let courierId = $(this).data('id');
             let data = checkURLData({ courierId: courierId });
@@ -286,14 +314,17 @@
                 url: '{{ route('courier.items') }}',
                 type: 'GET',
                 data: {
-                    pagination: data.paginationCouriers,
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    pagination: data.paginationItems,
                     courier_id: data.courierId,
                 },
                 success: (response) => {
                     console.log('.C-courier-list-item');
                     deployItemsList(response);
-                    // correctItemShow();
-                    correctItemPaginationLinks();
 
                 }
             });
@@ -363,20 +394,8 @@
                     console.log('#search');
 
                     // Fill the table
-                    let rows = '';
-                    $.each(response.data, function (index, item) {
-                        rows += '<tr>';
-                        rows += '<td>' + item.track_code + '</td>';
-                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
-                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
-                        rows += '<td>' + "N/A" + '</td>';
-                        rows += '</tr>';
-                    });
-
-                    $('#items_tbody').html(rows);
-                    $('#items_pagination').html(response.linksHTML);
+                    deployItemsList(response);
                     correctItemShow();
-                    correctItemPaginationLinks();
                 }
             });
         });
@@ -457,35 +476,13 @@
                 },
                 success: (response) => {
                     console.dir(response);
-                    let rows = '';
-                    $.each(response.data, function (index, courier) {
-                        rows += '<tr>';
-                        rows += '<td>' + courier.name + '</td>';
-                        rows += '<td>' + courier.delivered + '</td>';
-                        rows += '<td>' + courier.in_progress + '</td>';
-                        rows += '<td>' + courier.failed + '</td>';
-                        rows += '</tr>';
-                    });
-                    $('#couriers_tbody').html(rows);
+                    deployCouriersList(response);
                     $("#pagination_couriers button").html(pagination);
-
-                    // Toggle the sort order for the next click
-                    if (sortOrder === 'asc') {
-                        $(this).data('order', 'desc');
-                        $(this).attr('data-order', 'desc');
-
-                    } else {
-                        $(this).data('order', 'asc');
-                        $(this).attr('data-order', 'asc');
-                    }
-
                 }
             });
         });
     });
 
-    // Setting sort for items
-    $(document).ready(function () { correctItemShow(); });
 
 
 </script>
