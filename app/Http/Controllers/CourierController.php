@@ -18,7 +18,7 @@ class CourierController extends Controller
         // Get the sort option from the request, default to sorting by 'id'
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
-        $pagination = $request->input('pagination', 50);
+        $pagination = $request->input('pagination', 5);
         $courier_id = $request->input('courier_id', null);
         $currentPage = $request->input('page', 1);
         ; // You can set this to any page you want to paginate to
@@ -37,7 +37,7 @@ class CourierController extends Controller
     {
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc');
-        $pagination = $request->input('pagination', 50);
+        $pagination = $request->input('pagination', 5);
 
         $currentPage = $request->input('page');
         ; // You can set this to any page you want to paginate to
@@ -56,7 +56,7 @@ class CourierController extends Controller
         // Get the sort option from the request, default to sorting by 'id'
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
-        $pagination = $request->input('pagination', 50);
+        $pagination = $request->input('pagination', 5);
         $courier_id = $request->input('courier_id', null);
         $page_items = $request->input('page_items', 1);
         ; // You can set this to any page you want to paginate to
@@ -81,8 +81,8 @@ class CourierController extends Controller
         $query = Item::query();
 
         // Form request
-        if (isset($data['track_code'])) {
-            $query->where('track_code', 'like', '%'.$data['track_code'].'%');
+        if (isset($data['track_code']) && !empty($data['track_code'])) {
+            $query->where('track_code', 'like',  '%'.$data['track_code'].'%');
         }
 
         if (isset($data['picked_up'])) {
@@ -99,7 +99,7 @@ class CourierController extends Controller
             $query->orderBy($data['sortItem'], $data['orderItem']);
         }
         // Pagination
-        $pagination = $data['paginationItems'] ?? 50;
+        $pagination = $data['paginationItems'] ?? 5;
 
         // Sorting
         if (isset($data['page_items'])) {

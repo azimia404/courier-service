@@ -94,63 +94,54 @@
                         </div>
                     </div> -->
 <script>
-    function correctItemPaginationLinks() {
-        $('#items_pagination a').on('click', function (e) {
+    function deployCouriersList(response) {
+        let rows = '';
+        $.each(response.data, function (index, courier) {
+            rows += '<tr>';
+            rows += '<td>' + courier.name + '</td>';
+            rows += '<td>' + courier.delivered + '</td>';
+            rows += '<td>' + courier.in_progress + '</td>';
+            rows += '<td>' + courier.failed + '</td>';
+            rows += '</tr>';
+        });
+        $('#couriers_tbody').html(rows);
+    }
+    function deployItemsList(response) {
+        let rows = '';
+        $.each(response.data, function (index, item) {
+            rows += '<tr>';
+            rows += '<td>' + item.track_code + '</td>';
+            rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
+            rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
+            rows += '<td>' + "N/A" + '</td>';
+            rows += '</tr>';
+        });
+        $('#items_tbody').html(rows);
+        $('#items_pagination').html(response.linksHTML);
+    }
+
+    function correctItemShow() {
+        $('#links_items a').on('click', function (e) {
             e.preventDefault();
+            let paginationItems = $(this).data('value');
+
+            let data = checkURLData({ paginationItems: paginationItems });
 
 
-            // Keyword
-            var keyword = $('#search').val();
-
-            // Get params from URL
-            let url = new URL(window.location.href);
-            let id = url.searchParams.get("courier_id");
-
-            // Get sorting
-            if (!url.searchParams.get("sort")) {
-                // Adding param to url
-                url.searchParams.set('sortItem', 'track_code');
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Get sorting
-            if (!url.searchParams.get("order")) {
-                // Adding param to url
-                url.searchParams.set('orderItem', 'asc');
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Get paginationItems
-            if (!url.searchParams.get("paginationItems")) {
-                // Adding param to url
-                url.searchParams.set('paginationItems', 5);
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Sorting
-            let sortField = url.searchParams.get("sortItem");
-            let sortOrder = url.searchParams.get("orderItem");
-            let paginationItems = url.searchParams.get('paginationItems');
-            let page_items = url.searchParams.get('page_items');
-
-            console.log("correcting items links")
             $.ajax({
-                url: $(this).attr('href'),
+                url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
-                    track_code: keyword ? keyword : undefined,
-                    courier_id: id,
-                    sortItem: sortField,
-                    orderItem: sortOrder,
-                    paginationItems: paginationItems,
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    page_items: data.pageItems,
                 },
                 success: (response) => {
-                    console.dir("#items_pagination a");
+                    console.log('#links_items a');
                     console.dir(response);
-
 
                     let rows = '';
                     $.each(response.data, function (index, item) {
@@ -163,90 +154,147 @@
                     });
                     $('#items_tbody').html(rows);
                     $('#items_pagination').html(response.linksHTML);
-                    correctItemPaginationLinks()
+                    $('#links_items_show').html(data.paginationItems);
+                    // correctItemShow();
+                    correctItemPaginationLinks();
                 }
             });
         });
     }
 
-    $(document).ready(function () {
-        $('#couriers_table th').on('click', function () {
-            let sortField = $(this).data('sort');
-            let sortOrder = $(this).data('order');
+    function correctItemPaginationLinks() {
+        $('#items_pagination a').on('click', function (e) {
+            console.log('Correcting pagination links');
+            e.preventDefault();
 
+            let data = checkURLData();
+
+            let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
             $.ajax({
-                url: '{{ route('couriers.sort') }}',
+                url: $(this).attr("href"),
                 type: 'GET',
                 data: {
-                    sort: sortField,
-                    order: sortOrder,
-                    pagination: {{$pagination}},
-                    page: {{$_GET["page"] ?? 1}}
-                    },
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                },
                 success: (response) => {
                     console.dir(response);
-                    let rows = '';
-                    $.each(response.data, function (index, courier) {
-                        rows += '<tr>';
-                        rows += '<td>' + courier.name + '</td>';
-                        rows += '<td>' + courier.delivered + '</td>';
-                        rows += '<td>' + courier.in_progress + '</td>';
-                        rows += '<td>' + courier.failed + '</td>';
-                        rows += '</tr>';
-                    });
-                    $('#couriers_tbody').html(rows);
-
-                    // Toggle the sort order for the next click
-                    if (sortOrder === 'asc') {
-                        $(this).data('order', 'desc');
-                        $(this).attr('data-order', 'desc');
-
-                    } else {
-                        $(this).data('order', 'asc');
-                        $(this).attr('data-order', 'asc');
-                    }
-
+                    deployItemsList(response);
+                    correctItemPaginationLinks();
                 }
             });
         });
-    });
-    let courier_id;
+    }
+    function checkURLData(data = {
+        sortCouriers: null,
+        orderCouriers: null,
+        pageCouriers: null,
+        paginationCouriers: null,
+
+        sortItems: null,
+        orderItems: null,
+        pageItems: null,
+        paginationItems: null,
+
+        courierId: null
+    }) {
+        const newData = Object.assign({}, data);
+
+        let url = new URL(window.location.href);
+
+        if (!(data !== null && typeof data === 'object')) {
+            console.error("NOT OBJECT IS GIVEN IN CHECKURLDATA");
+            return;
+        }
+
+        if (data.sortCouriers == null && !(newData.sortCouriers = url.searchParams.get("sort"))) {
+            newData.sortCouriers = "name";
+        };
+        url.searchParams.set('sort', newData.sortCouriers || 'name');
+
+        // Get order
+        if (data.orderCouriers == null && !(newData.orderCouriers = url.searchParams.get("order"))) {
+            newData.orderCouriers = "asc";
+        };
+        url.searchParams.set('order', newData.orderCouriers || 'asc');
+
+        // Get page_items
+        if (data.pageCouriers == null && !(newData.pageCouriers = url.searchParams.get("page"))) {
+            newData.pageCouriers = 1;
+        };
+        url.searchParams.set('page', newData.page || 1);
+
+        // Get paginationItems
+        if (data.paginationCouriers == null && !(newData.paginationCouriers = url.searchParams.get("pagination"))) {
+            newData.paginationCouriers = 5;
+        };
+        url.searchParams.set('pagination', newData.pagination || 5);
+
+        // Courier ID
+        if (data.courierId == null && !(newData.courierId = url.searchParams.get("courierId"))) {
+            newData.courierId = 0;
+        };
+        url.searchParams.set('courierId', newData.courierId || 5);
+
+
+        // Items data
+        // Get sorting
+        if (data.sortItems == null && !(newData.sortItems = url.searchParams.get("sortItems"))) {
+            newData.sortItems = "track_code";
+        };
+        url.searchParams.set('sortItems', newData.sortItems || 'track_code');
+
+        // Get order
+        if (data.orderItems == null && !(newData.orderItems = url.searchParams.get("orderItems"))) {
+            newData.orderItems = "asc";
+        };
+        url.searchParams.set('orderItems', newData.orderItems || 'asc');
+
+        // Get page_items
+        if (data.pageItems == null && !(newData.pageItems = url.searchParams.get("page_items"))) {
+            newData.pageItems = 1;
+        };
+        url.searchParams.set('page_items', newData.pageItems || 1);
+
+        // Get paginationItems
+        if (data.paginationItems == null && !(newData.paginationItems = url.searchParams.get("paginationItems"))) {
+            newData.paginationItems = 5;
+        };
+        url.searchParams.set('paginationItems', newData.paginationItems || 5);
+
+        // Get Item track code keyword
+        if (data.trackCodeItem == null && !(newData.trackCodeItem = url.searchParams.get("trackCodeItem"))) {
+            newData.trackCodeItem = "";
+        };
+        url.searchParams.set('trackCodeItem', newData.trackCodeItem || "");
+
+        history.pushState({}, '', url);
+
+        return newData;
+    }
+
+
     $(document).ready(function () {
         $('.C-courier-list-item').on('click', function () {
-            coruierId = $(this).data('id');
+            let courierId = $(this).data('id');
+            let data = checkURLData({ courierId: courierId });
+
             $.ajax({
                 url: '{{ route('courier.items') }}',
                 type: 'GET',
                 data: {
-                    pagination: {{$pagination}},
-                    courier_id: coruierId,
-                    page: {{$_GET["page"] ?? 1}}
-                    },
+                    pagination: data.paginationCouriers,
+                    courier_id: data.courierId,
+                },
                 success: (response) => {
                     console.log('.C-courier-list-item');
+                    deployItemsList(response);
+                    // correctItemShow();
+                    correctItemPaginationLinks();
 
-                    let rows = '';
-                    $.each(response.data, function (index, item) {
-                        rows += '<tr>';
-                        rows += '<td>' + item.track_code + '</td>';
-                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
-                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
-                        rows += '<td>' + "N/A" + '</td>';
-                        rows += '</tr>';
-                    });
-                    $('#items_tbody').html(rows);
-                    $('#items_pagination').html(response.linksHTML);
-                    correctItemPaginationLinks()
-
-                    let url = new URL(window.location.href);
-
-                    // Adding param to url
-                    url.searchParams.set('courier_id', coruierId);
-                    console.dir(response);
-                    console.dir(response.links);
-
-                    // Update the URL in the address bar without reloading the page
-                    history.pushState({}, '', url);
                 }
             });
         });
@@ -256,15 +304,17 @@
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
+            let data = checkURLData({ orderCouriers: sortOrder, sortCouriers: sortField });
+
             $.ajax({
                 url: '{{ route('couriers.sort') }}',
                 type: 'GET',
                 data: {
-                    sort: sortField,
-                    order: sortOrder,
-                    pagination: {{$pagination}},
-                    page: {{$_GET["page"] ?? 1}}
-                    },
+                    sort: data.sortCouriers,
+                    order: data.orderCouriers,
+                    pagination: data.paginationCouriers,
+                    page: data.pageCouriers
+                },
                 success: (response) => {
                     console.log('#couriers-tbody th');
                     console.dir(response);
@@ -288,12 +338,6 @@
                         $(this).data('order', 'asc');
                         $(this).attr('data-order', 'asc');
                     }
-                    
-                    $('#items_pagination').html(response.linksHTML);
-                    console.dir(response.linksHTML);
-                    correctItemPaginationLinks()
-
-
                 }
             });
         });
@@ -302,64 +346,21 @@
         $('#search').on('keyup', function (e) {
             // Keyword
             var keyword = $('#search').val();
-
-            // Get params from URL
-            let url = new URL(window.location.href);
-            let id = url.searchParams.get("courier_id");
-
-            // Get sorting
-            if (!url.searchParams.get("sort")) {
-                // Adding param to url
-                url.searchParams.set('sortItem', 'track_code');
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Get sorting
-            if (!url.searchParams.get("order")) {
-                // Adding param to url
-                url.searchParams.set('orderItem', 'asc');
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Get page_items
-            if (!url.searchParams.get("page_items")) {
-                // Adding param to url
-                url.searchParams.set('page_items', 1);
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Get paginationItems
-            if (!url.searchParams.get("paginationItems")) {
-                // Adding param to url
-                url.searchParams.set('paginationItems', 5);
-                // Update the URL in the address bar without reloading the page
-                history.pushState({}, '', url);
-            };
-
-            // Sorting
-            let sortField = url.searchParams.get("sortItem");
-            let sortOrder = url.searchParams.get("orderItem");
-            let paginationItems = url.searchParams.get('paginationItems');
-            let page_items = url.searchParams.get('page_items');
+            let data = checkURLData({ trackCodeItem: keyword });
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
-                    track_code: keyword ? keyword : undefined,
-                    courier_id: id,
-                    sortItem: sortField,
-                    orderItem: sortOrder,
-                    paginationItems: paginationItems,
-                    page_items: page_items,
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    page_items: data.pageItems,
                 },
                 success: (response) => {
                     console.log('#search');
-                    console.dir(response);
-                    console.dir(id);
 
                     // Fill the table
                     let rows = '';
@@ -374,8 +375,8 @@
 
                     $('#items_tbody').html(rows);
                     $('#items_pagination').html(response.linksHTML);
-                    console.dir(response.linksHTML);
-                    correctItemPaginationLinks()
+                    correctItemShow();
+                    correctItemPaginationLinks();
                 }
             });
         });
@@ -389,53 +390,25 @@
     // Setting sort for items
     $(document).ready(function () {
         $('#items_table th').on('click', function () {
-            var keyword = $('#search').val();
-
             // Get params from URL
-            let url = new URL(window.location.href);
-            let id = url.searchParams.get("courier_id");
-
-            // Get sorting
-            if (!url.searchParams.get("page_items")) {
-                // Adding param to url
-                url.searchParams.set('page_items', 1);
-                // Update the URL in the address bar without reloading the page
-            };
-
-            // Get sorting
-            if (!url.searchParams.get("paginationItems")) {
-            console.log('resetting pagitems')
-                // Adding param to url
-                url.searchParams.set('paginationItems', 5);
-                // Update the URL in the address bar without reloading the page
-            };
-            history.pushState({}, '', url);
-
-            // Sorting
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
-            let paginationItems = url.searchParams.get('paginationItems');
-            let page_items = url.searchParams.get('page_items');
 
-            url.searchParams.set('sortItem', sortField);
-            url.searchParams.set('orderItem', sortOrder);
-            // Update the URL in the address bar without reloading the page
-            history.pushState({}, '', url);
+            let data = checkURLData({ sortItems: sortField, orderItems: sortOrder });
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
                 type: 'GET',
                 data: {
-                    track_code: keyword ? keyword : undefined,
-                    courier_id: id,
-                    sortItem: sortField,
-                    orderItem: sortOrder,
-                    paginationItems: paginationItems,
-                    page_items: page_items,
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    page_items: data.pageItems,
                 },
                 success: (response) => {
                     console.log('#items_table th');
-                    console.dir(response);
 
                     let rows = '';
                     $.each(response.data, function (index, item) {
@@ -448,7 +421,7 @@
                     });
                     $('#items_tbody').html(rows);
                     $('#items_pagination').html(response.linksHTML);
-                    correctItemPaginationLinks()
+                    correctItemPaginationLinks();
 
                     // Toggle the sort order for the next click
                     if (sortOrder === 'asc') {
@@ -465,6 +438,55 @@
             });
         });
     });
+
+    // Setting sort for items
+    $(document).ready(function () {
+        $('#pagination_couriers a').on('click', function (e) {
+            let pagination = $(this).data("value");
+
+            let data = checkURLData({ paginationCouriers: pagination });
+
+            $.ajax({
+                url: '{{ route('couriers.sort') }}',
+                type: 'GET',
+                data: {
+                    sort: data.sortCouriers,
+                    order: data.orderCouriers,
+                    pagination: data.paginationCouriers,
+                    page: data.pageCouriers
+                },
+                success: (response) => {
+                    console.dir(response);
+                    let rows = '';
+                    $.each(response.data, function (index, courier) {
+                        rows += '<tr>';
+                        rows += '<td>' + courier.name + '</td>';
+                        rows += '<td>' + courier.delivered + '</td>';
+                        rows += '<td>' + courier.in_progress + '</td>';
+                        rows += '<td>' + courier.failed + '</td>';
+                        rows += '</tr>';
+                    });
+                    $('#couriers_tbody').html(rows);
+                    $("#pagination_couriers button").html(pagination);
+
+                    // Toggle the sort order for the next click
+                    if (sortOrder === 'asc') {
+                        $(this).data('order', 'desc');
+                        $(this).attr('data-order', 'desc');
+
+                    } else {
+                        $(this).data('order', 'asc');
+                        $(this).attr('data-order', 'asc');
+                    }
+
+                }
+            });
+        });
+    });
+
+    // Setting sort for items
+    $(document).ready(function () { correctItemShow(); });
+
 
 </script>
 <div class="d-flex gap-4">
@@ -507,14 +529,51 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}" id="pagination">
-                {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
+
+
+            <div class="d-flex justify-content-between  p-2">
+                <div class="d-flex justify-content-between" id="pagination_couriers">
+                    <div>
+                        {{ __('Show') }}
+                        <div class="btn-group dropup">
+                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                {{$pagination}}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-value="1">1</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="2">2</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="5">5</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="10">10</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="25">25</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="50">50</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="100">>100</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="150">>150</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="200">>200</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="250">>250</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-row-reverse" aria-label="{{ __('Page navigation example') }}" id="pagination">
+                    {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
-        <div class="card-body p-0 col">
+    <div class="card bg-lightp-0 p-0 mt-3 col">
+        <div class="card-body p-0 col d-flex flex-column justify-content-between">
             <table class="table C-table-list col C-courier-items-list m-0" id="items_table">
                 <thead>
                     <tr class="C-list-item">
@@ -537,54 +596,47 @@
                 </thead>
                 <tbody id="items_tbody"></tbody>
             </table>
-            <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}"
-                id="items_pagination"></div>
+            <div class="d-flex justify-content-between p-2">
+                <div class="d-flex justify-content-between" id="links_items">
+                    <div>
+                        {{ __('Show') }}
+                        <div class="btn-group dropup">
+                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false" id="links_items_show">
+                                {{$pagination}}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-value="1">1</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="2">2</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="5">5</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="10">10</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="25">25</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="50">50</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="100">>100</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="150">>150</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="200">>200</a>
+                                </li>
+                                <li><a class="dropdown-item" href="#" data-value="250">>250</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}"
+                    id="items_pagination"></div>
+            </div>
+
         </div>
     </div>
 
-</div>
-
-<div class="d-flex justify-content-between mt-3">
-    <div>
-        {{ __('Show') }}
-        <div class="btn-group dropup">
-            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                {{$pagination}}
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 1]) }}">1</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 2]) }}">2</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 5]) }}">5</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 10]) }}">10</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 25]) }}">25</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 50]) }}">50</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 100]) }}">100</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 150]) }}">150</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 200]) }}">200</a>
-                </li>
-                <li><a class="dropdown-item"
-                        href="{{ route('couriers.index', ['sort' => $sortField, 'order' => $sortOrder, 'pagination' => 250]) }}">250</a>
-                </li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 
