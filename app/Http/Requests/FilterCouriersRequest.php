@@ -24,10 +24,10 @@ class FilterCouriersRequest extends FormRequest
     public function rules()
     {
         return [
-            "name"=> "string",
-            "delivered"=> "integer",
-            "in_progress"=> "integer",
-            "failed"=> "integer",
+            "name"=> "",
+            "delivered"=> "",
+            "in_progress"=> "",
+            "failed"=> "",
         ];
     }
 }

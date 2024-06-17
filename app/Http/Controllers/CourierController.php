@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FilterItemsRequest;
+use App\Http\Requests\FilterCouriersRequest;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Courier;
@@ -49,7 +50,9 @@ class CourierController extends Controller
         });
 
         $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
-        return response()->json($couriers);
+        $linksHTML = ["linksHTML" => $couriers->links()->render()];
+        $data = (object) array_merge((array) $couriers->toArray(), (array) $linksHTML);
+        return response()->json($data);
     }
     public function items(Request $request)
     {
@@ -115,4 +118,5 @@ class CourierController extends Controller
         // Fetch and sort the couriers
         return response()->json($data);
     }
+    
 }

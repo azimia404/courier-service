@@ -94,10 +94,78 @@
                         </div>
                     </div> -->
 <script>
+    function putCourierItemListener() {
+        $('.C-courier-list-item').on('click', function () {
+            let courierId = $(this).data('id');
+            let data = checkURLData({ courierId: courierId });
+
+            $.ajax({
+                url: '{{ route('courier.items') }}',
+                type: 'GET',
+                data: {
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    pagination: data.paginationItems,
+                    courier_id: data.courierId,
+                },
+                success: (response) => {
+                    console.log('.C-courier-list-item');
+                    deployItemsList(response);
+
+                }
+            });
+        });
+    }
+
+    function correctItemPaginationLinks() {
+        $('#items_pagination a').on('click', function (e) {
+            console.log('Correcting item pagination links');
+            e.preventDefault();
+
+            let data = checkURLData();
+
+            let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                data: {
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                },
+                success: (response) => {
+                    console.dir(response);
+                    deployItemsList(response);
+                    correctItemPaginationLinks();
+                }
+            });
+        });
+    }
+    function correctCourierPaginationLinks() {
+        $('#pagination a').on('click', function (e) {
+            console.log('Correcting courier links');
+            e.preventDefault();
+
+            
+            checkURLData();
+            let url = window.location.search + "&page=" + $(this).attr("href").split("page=")[1];
+            console.log(url);
+            
+            fetch(`{{ route('couriers.sort') }}${url}`, {
+                type: 'Get',
+            }).then((response) => response.json())
+                .then((response) => deployCouriersList(response));
+        });
+    }
     function deployCouriersList(response) {
         let rows = '';
         $.each(response.data, function (index, courier) {
-            rows += '<tr>';
+            rows += `<tr class="C-courier-list-item" data-id="${courier.id}">`;
             rows += '<td>' + courier.name + '</td>';
             rows += '<td>' + courier.delivered + '</td>';
             rows += '<td>' + courier.in_progress + '</td>';
@@ -105,6 +173,10 @@
             rows += '</tr>';
         });
         $('#couriers_tbody').html(rows);
+        console.dir(response);
+        $('#pagination').html(response.linksHTML);
+        correctCourierPaginationLinks();
+        putCourierItemListener();
     }
     function deployItemsList(response) {
         let rows = '';
@@ -162,59 +234,6 @@
             });
         });
     }
-
-    function correctItemPaginationLinks() {
-        $('#items_pagination a').on('click', function (e) {
-            console.log('Correcting pagination links');
-            e.preventDefault();
-
-            let data = checkURLData();
-
-            let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
-            $.ajax({
-                url: $(this).attr("href"),
-                type: 'GET',
-                data: {
-                    track_code: data.trackCodeItem,
-                    courier_id: data.courierId,
-                    sortItem: data.sortItems,
-                    orderItem: data.orderItems,
-                    paginationItems: data.paginationItems,
-                },
-                success: (response) => {
-                    console.dir(response);
-                    deployItemsList(response);
-                    correctItemPaginationLinks();
-                }
-            });
-        });
-    }
-    function correctCourierPaginationLinks() {
-        $('#pagination a').on('click', function (e) {
-            console.log('Correcting courier links');
-            e.preventDefault();
-
-            let data = checkURLData();
-
-            let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
-            $.ajax({
-                url: $(this).attr("href"),
-                type: 'GET',
-                data: {
-                    track_code: data.trackCodeItem,
-                    courier_id: data.courierId,
-                    sortItem: data.sortItems,
-                    orderItem: data.orderItems,
-                    paginationItems: data.paginationItems,
-                },
-                success: (response) => {
-                    console.dir(response);
-                    deployCourierList(response);
-                    correctCourierPaginationLinks();
-                }
-            });
-        });
-    }
     function checkURLData(data = {
         sortCouriers: null,
         orderCouriers: null,
@@ -252,13 +271,13 @@
         if (data.pageCouriers == null && !(newData.pageCouriers = url.searchParams.get("page"))) {
             newData.pageCouriers = 1;
         };
-        url.searchParams.set('page', newData.page || 1);
+        url.searchParams.set('page', newData.pageCouriers || 1);
 
         // Get paginationItems
         if (data.paginationCouriers == null && !(newData.paginationCouriers = url.searchParams.get("pagination"))) {
             newData.paginationCouriers = 5;
         };
-        url.searchParams.set('pagination', newData.pagination || 5);
+        url.searchParams.set('pagination', newData.paginationCouriers || 5);
 
         // Courier ID
         if (data.courierId == null && !(newData.courierId = url.searchParams.get("courierId"))) {
@@ -305,33 +324,16 @@
 
 
     $(document).ready(function () {
+        checkURLData();
         correctItemShow();
-        $('.C-courier-list-item').on('click', function () {
-            let courierId = $(this).data('id');
-            let data = checkURLData({ courierId: courierId });
-
-            $.ajax({
-                url: '{{ route('courier.items') }}',
-                type: 'GET',
-                data: {
-                    track_code: data.trackCodeItem,
-                    courier_id: data.courierId,
-                    sortItem: data.sortItems,
-                    orderItem: data.orderItems,
-                    paginationItems: data.paginationItems,
-                    pagination: data.paginationItems,
-                    courier_id: data.courierId,
-                },
-                success: (response) => {
-                    console.log('.C-courier-list-item');
-                    deployItemsList(response);
-
-                }
-            });
-        });
+        fetch(`{{ route('couriers.sort') }}`, {
+            type: 'Get',
+        }).then((response) => response.json())
+            .then((response) => deployCouriersList(response));
     });
+
     $(document).ready(function () {
-        $('#couriers_table th').on('click', function () {
+            $('#couriers_table th').on('click', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -475,7 +477,7 @@
                     page: data.pageCouriers
                 },
                 success: (response) => {
-                    console.dir(response);
+                    console.dir("pagination_couriers a");
                     deployCouriersList(response);
                     $("#pagination_couriers button").html(pagination);
                 }
@@ -508,22 +510,6 @@
                     </tr>
                 </thead>
                 <tbody id="couriers_tbody">
-                    @foreach ($couriers as $courier)
-                        <tr class="item C-list-item C-courier-list-item" data-id="{{$courier->id}}">
-                            <td>
-                                {{$courier->name}}
-                            </td>
-                            <td>
-                                {{$courier->delivered}}
-                            </td>
-                            <td>
-                                {{$courier->in_progress}}
-                            </td>
-                            <td>
-                                {{$courier->failed}}
-                            </td>
-                        </tr>
-                    @endforeach
                 </tbody>
             </table>
 
@@ -563,7 +549,6 @@
                     </div>
                 </div>
                 <div class="d-flex flex-row-reverse" aria-label="{{ __('Page navigation example') }}" id="pagination">
-                    {{$couriers->appends(compact("couriers", 'sortField', 'sortOrder', 'pagination'))->links()}}
                 </div>
             </div>
         </div>
