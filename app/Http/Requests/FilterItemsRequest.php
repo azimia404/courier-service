@@ -24,13 +24,13 @@ class FilterItemsRequest extends FormRequest
     public function rules()
     {
         return [
-            "courierId"=> "integer",
-            "courier_id"=> "integer",
-            "sortItem"=> "string",
-            "orderItem"=> "string",
+            "courierId"=> "",
+            "courier_id"=> "",
+            "sortItem"=> "",
+            "orderItem"=> "",
             "track_code"=> "",
-            "page_items"=> "int",
-            "paginationItems"=> "int",
+            "page_items"=> "",
+            "paginationItems"=> "",
             "picked_up"=> "",
             "dropped_off"=> "",
         ];

@@ -121,13 +121,15 @@
     }
 
     function correctItemPaginationLinks() {
-        $('#items_pagination a').on('click', function (e) {
             console.log('Correcting item pagination links');
+        $('#items_pagination a').on('click', function (e) {
+            console.log('items_pagination a');
             e.preventDefault();
 
             let data = checkURLData();
 
             let url = (new URL(window.location.href)) + "&page_items=" + $(this).attr("href").split("page_items=")[1];
+            console.dir(data);
             $.ajax({
                 url: $(this).attr("href"),
                 type: 'GET',
@@ -147,9 +149,10 @@
         });
     }
     function correctCourierPaginationLinks() {
-        $('#pagination a').on('click', function (e) {
             console.log('Correcting courier links');
+        $('#pagination a').on('click', function (e) {
             e.preventDefault();
+            console.log('#pagination a');
 
             
             checkURLData();
@@ -158,7 +161,10 @@
             
             fetch(`{{ route('couriers.sort') }}${url}`, {
                 type: 'Get',
-            }).then((response) => response.json())
+            }).then((response) => {
+                console.dir(response);
+                return response.json();
+            })
                 .then((response) => deployCouriersList(response));
         });
     }
@@ -281,9 +287,9 @@
 
         // Courier ID
         if (data.courierId == null && !(newData.courierId = url.searchParams.get("courierId"))) {
-            newData.courierId = 0;
+            newData.courierId = '';
         };
-        url.searchParams.set('courierId', newData.courierId || 5);
+        url.searchParams.set('courierId', newData.courierId || '');
 
 
         // Items data
@@ -379,7 +385,7 @@
         $('#search').on('keyup', function (e) {
             // Keyword
             var keyword = $('#search').val();
-            let data = checkURLData({ trackCodeItem: keyword });
+            let data = checkURLData({ trackCodeItem: keyword, courierId: '' });
 
             $.ajax({
                 url: '{{ route('courier.items.search') }}',
