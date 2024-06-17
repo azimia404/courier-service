@@ -18,6 +18,9 @@
         <div class="d-flex">
             <a class="navbar-brand" href="#"><img style="max-width: 10rem" src="{{URL::asset("img/logo.png")}}"
                     alt="139express"></a>
+            <script>
+                let sidebarOpen =true;
+            </script>
             <label for="C-focuser" class="navbar-toggler d-flex align-items-center border-0" type="button" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                 aria-label="{{ __('Toggle navigation') }}"
