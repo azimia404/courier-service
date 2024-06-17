@@ -386,7 +386,6 @@
                 type: 'GET',
                 data: {
                     track_code: data.trackCodeItem,
-                    courier_id: data.courierId,
                     sortItem: data.sortItems,
                     orderItem: data.orderItems,
                     paginationItems: data.paginationItems,
