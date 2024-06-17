@@ -25,6 +25,7 @@ class FilterCouriersRequest extends FormRequest
     {
         return [
             "name"=> "",
+            "nameCourier"=> "",
             "delivered"=> "",
             "in_progress"=> "",
             "failed"=> "",

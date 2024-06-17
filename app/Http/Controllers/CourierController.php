@@ -20,7 +20,7 @@ class CourierController extends Controller
         $sortField = $request->input('sort', 'id');
         $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
         $pagination = $request->input('pagination', 5);
-        $courier_id = $request->input('courier_id', null);
+        $courier_id = $request->input('courier_id', '');
         $currentPage = $request->input('page', 1);
         ; // You can set this to any page you want to paginate to
 
@@ -34,65 +34,57 @@ class CourierController extends Controller
         $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
         return view("main", compact("couriers", 'sortField', 'sortOrder', 'pagination', 'courier_id'));
     }
-    public function sort(Request $request)
+    public function sort(FilterCouriersRequest $request)
     {
-        $sortField = $request->input('sort', 'id');
-        $sortOrder = $request->input('order', 'asc');
-        $pagination = $request->input('pagination', 5);
+        $data = $request->validated();
 
-        $currentPage = $request->input('page');
-        ; // You can set this to any page you want to paginate to
+        $query = Courier::query();
 
-        // Make sure that you call the static method currentPageResolver()
-        // before querying users
-        Paginator::currentPageResolver(function () use ($currentPage) {
-            return $currentPage;
-        });
+        if (isset($data['nameCourier'])) {
+            $query->where('name', 'like', '%'.$data['nameCourier'].'%');
+        }
+        // Sorting
+        if (isset($data['sort']) && isset($data['order'])) {
+            $query->orderBy($data['order'], $data['sort']);
+        }
+        // Pagination
+        $pagination = $data['pagination'] ?? 5;
 
-        $couriers = Courier::orderBy($sortField, $sortOrder)->paginate($pagination);
-        $linksHTML = ["linksHTML" => $couriers->links()->render()];
-        $data = (object) array_merge((array) $couriers->toArray(), (array) $linksHTML);
+        // Sorting
+        if (isset($data['page'])) {
+            $page = $data['page'];
+            Paginator::currentPageResolver(function () use ($page) {
+                return $page;
+            });
+        }
+
+        $items = $query->paginate($pagination, ['*'], 'page');
+        $linksHTML = ["linksHTML" => $items->links()->render()];
+        $data = (object) array_merge((array) $items->toArray(), (array) $linksHTML);
+        // Fetch and sort the couriers
         return response()->json($data);
     }
     public function items(Request $request)
     {
-        $data = $request->validated();
+        // Get the sort option from the request, default to sorting by 'id'
+        $sortField = $request->input('sort', 'id');
+        $sortOrder = $request->input('order', 'asc'); // 'asc' or 'desc'
+        $pagination = $request->input('pagination', 5);
+        $courier_id = $request->input('courier_id', '');
+        $page_items = $request->input('page_items', 1);
+        ; // You can set this to any page you want to paginate to
 
-        $query = Item::query();
+        // Make sure that you call the static method currentPageResolver()
+        // before querying users
+        Paginator::currentPageResolver(function () use ($page_items) {
+            return $page_items;
+        });
 
-        // Form request
-        if (isset($data['track_code']) && !empty($data['track_code'])) {
-            $query->where('track_code', 'like',  '%'.$data['track_code'].'%');
-        }
-
-        if (isset($data['picked_up'])) {
-        }
-
-        if (isset($data['dropped_off'])) {
-        }
-
-        if (isset($data['courier_id']) && $data['courier_id'] != '') {
-            $query->where('courier_id', '=', '%'.$data['courier_id'].'%');
-        }
-        // Sorting
-        if (isset($data['orderItem']) && isset($data['sortItem'])) {
-            $query->orderBy($data['sortItem'], $data['orderItem']);
-        }
-        // Pagination
-        $pagination = $data['paginationItems'] ?? 5;
-
-        // Sorting
-        if (isset($data['page_items'])) {
-            $page_items = $data['page_items'];
-            Paginator::currentPageResolver(function () use ($page_items) {
-                return $page_items;
-            });
-        }
-
-        $items = $query->paginate($pagination, ['*'], 'page_items');
-        $linksHTML = ["linksHTML" => $items->links()->render()];
-        $data = (object) array_merge((array) $items->toArray(), (array) $linksHTML);
         // Fetch and sort the couriers
+        $info = Item::where('courier_id', '=', $courier_id)->paginate($pagination, ['*'], 'page_items');
+        $linksHTML = ["linksHTML" => $info->appends(compact("courier_id", 'sortField', 'sortOrder', 'pagination', 'page_items'))->links()->render()];
+        $data = (object) array_merge((array) $info->toArray(), (array) $linksHTML);
+
         return response()->json($data);
     }
     public function search(FilterItemsRequest $request)
@@ -112,7 +104,7 @@ class CourierController extends Controller
         if (isset($data['dropped_off'])) {
         }
 
-        if (isset($data['courier_id']) && $data['courier_id'] != '') {
+        if (isset($data['courier_id'])) {
             $query->where('courier_id', '=', '%'.$data['courier_id'].'%');
         }
         // Sorting

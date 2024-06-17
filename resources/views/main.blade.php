@@ -7,92 +7,6 @@
         <li class="breadcrumb-item active" aria-current="page">{{ __('Data') }}</li>
     </ol>
 </nav>
-<div class=" row justify-space-between p-0 mt-3">
-    <div class="col p-0">
-        <button type="button" class="btn btn-success">{{ __('Success') }}</button>
-        <button type="button" class="btn btn-primary">{{ __('Activity') }}</button>
-        <button type="button" class="btn btn-secondary">{{ __('Import') }}</button>
-        <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button>
-    </div>
-    <form class="col-3" id="searchTrackCodeForm">
-        <input id="search" type="text" class="form-control " placeholder="{{ __('Search') }}"
-            aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
-    </form>
-</div>
-<!-- <div class="p-0 d-flex">
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('Track Code') }}
-                            </button>
-                            <div class="dropdown-menu pt-0">
-                                <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
-                                </form>
-                                <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('Picked UP') }}
-                            </button>
-                            <div class="dropdown-menu pt-0">
-                                <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
-                                </form>
-                                <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('Dropped Off') }}
-                            </button>
-                            <div class="dropdown-menu pt-0">
-                                <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
-                                </form>
-                                <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('Time Difference') }}
-                            </button>
-                            <div class="dropdown-menu pt-0">
-                                <form class="p-1 ">
-                                    <input type="search" class="form-control" id="searchCoin" placeholder="{{ __('Search') }}" autofocus="autofocus">
-                                </form>
-                                <ul class="list-unstyled m-0 C-dropdown-list">
-                                    <li><button class="dropdown-item" type="button">{{ __('Action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Another action') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                    <li><button class="dropdown-item" type="button">{{ __('Something else here') }}</button></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div> -->
 <script>
     function putCourierItemListener() {
         $('.C-courier-list-item').on('click', function () {
@@ -121,7 +35,7 @@
     }
 
     function correctItemPaginationLinks() {
-            console.log('Correcting item pagination links');
+        console.log('Correcting item pagination links');
         $('#items_pagination a').on('click', function (e) {
             console.log('items_pagination a');
             e.preventDefault();
@@ -149,16 +63,16 @@
         });
     }
     function correctCourierPaginationLinks() {
-            console.log('Correcting courier links');
+        console.log('Correcting courier links');
         $('#pagination a').on('click', function (e) {
             e.preventDefault();
             console.log('#pagination a');
 
-            
+
             checkURLData();
             let url = window.location.search + "&page=" + $(this).attr("href").split("page=")[1];
             console.log(url);
-            
+
             fetch(`{{ route('couriers.sort') }}${url}`, {
                 type: 'Get',
             }).then((response) => {
@@ -197,6 +111,7 @@
         $('#items_tbody').html(rows);
         $('#items_pagination').html(response.linksHTML);
         correctItemPaginationLinks();
+
     }
 
     function correctItemShow() {
@@ -251,7 +166,8 @@
         pageItems: null,
         paginationItems: null,
 
-        courierId: null
+        courierId: null,
+        nameCourier: null,
     }) {
         const newData = Object.assign({}, data);
 
@@ -285,12 +201,20 @@
         };
         url.searchParams.set('pagination', newData.paginationCouriers || 5);
 
+        // Get name
+        if (data.nameCourier == null && !(newData.nameCourier = url.searchParams.get("nameCourier"))) {
+            newData.nameCourier = '';
+        };
+        url.searchParams.set('nameCourier', newData.nameCourier || 5);
+
         // Courier ID
         if (data.courierId == null && !(newData.courierId = url.searchParams.get("courierId"))) {
             newData.courierId = '';
         };
         url.searchParams.set('courierId', newData.courierId || '');
 
+        // updating courier label
+        $('#courierId').html(newData.courierId || '');
 
         // Items data
         // Get sorting
@@ -339,7 +263,7 @@
     });
 
     $(document).ready(function () {
-            $('#couriers_table th').on('click', function () {
+        $('#couriers_table th').on('click', function () {
             let sortField = $(this).data('sort');
             let sortOrder = $(this).data('order');
 
@@ -407,6 +331,25 @@
             });
         });
         const form = document.querySelector('form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevents the default form submission behavior.
+            // Your form submission logic here.
+        });
+    });
+    $(document).ready(function () {
+        $('#searchCourierName').on('keyup', function (e) {
+            // Keyword
+            var keyword = $('#searchCourierName').val();
+            let data = checkURLData({ nameCourier: keyword });
+
+            console.dir(data)
+            fetch(`{{ route('couriers.sort') }}${window.location.search}`, {
+                type: 'Get',
+            }).then((response) => response.json())
+                .then((response) => deployCouriersList(response));
+                
+        });
+        const form = document.querySelector('#searchCourierNameForm');
         form.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevents the default form submission behavior.
             // Your form submission logic here.
@@ -494,133 +437,158 @@
 
 </script>
 <div class="d-flex gap-4">
-    <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
-        <div class="card-body p-0 col">
-            <table class="table C-table-list col m-0" id="couriers_table">
-                <thead>
-                    <tr class="C-list-item">
-                        <th class="custom d-none">
-                            <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
-                        </th>
-                        <th class="C-table-sort" data-sort="name" data-order="asc">{{ __('Account') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="delivered" data-order="asc">
-                            {{ __('Delivered') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="in_progress" data-order="asc">
-                            {{ __('In progress') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="failed" data-order="asc">{{ __('Failed') }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="couriers_tbody">
-                </tbody>
-            </table>
+    <div class="p-0 col d-flex flex-column">
+        <div class="d-flex justify-content-between">
+            <div class="col p-0">
+                <button type="button" class="btn btn-success">{{ __('Success') }}</button>
+                <button type="button" class="btn btn-primary">{{ __('Activity') }}</button>
+                <button type="button" class="btn btn-secondary">{{ __('Import') }}</button>
+                <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button>
+            </div>
+            <form class="col-6" id="searchCourierNameForm">
+                <input id="searchCourierName" type="text" class="form-control " placeholder="{{ __('Search') }}"
+                    aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
+            </form>
+        </div>
+        <div class="card bg-lightp-0 p-0 mt-3 d-flex col">
+            <div class="card-body p-0 col">
+                <table class="table C-table-list col m-0" id="couriers_table">
+                    <thead>
+                        <tr class="C-list-item">
+                            <th class="custom d-none">
+                                <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
+                            </th>
+                            <th class="C-table-sort" data-sort="name" data-order="asc">{{ __('Account') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="delivered" data-order="asc">
+                                {{ __('Delivered') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="in_progress" data-order="asc">
+                                {{ __('In progress') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="failed" data-order="asc">{{ __('Failed') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="couriers_tbody">
+                    </tbody>
+                </table>
 
 
-            <div class="d-flex justify-content-between  p-2">
-                <div class="d-flex justify-content-between" id="pagination_couriers">
-                    <div>
-                        {{ __('Show') }}
-                        <div class="btn-group dropup">
-                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                {{$pagination}}
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-value="1">1</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="2">2</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="5">5</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="10">10</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="25">25</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="50">50</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="100">>100</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="150">>150</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="200">>200</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="250">>250</a>
-                                </li>
-                            </ul>
+                <div class="d-flex justify-content-between  p-2">
+                    <div class="d-flex justify-content-between" id="pagination_couriers">
+                        <div>
+                            {{ __('Show') }}
+                            <div class="btn-group dropup">
+                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    {{$pagination}}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-value="1">1</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="2">2</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="5">5</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="10">10</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="25">25</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="50">50</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="100">>100</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="150">>150</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="200">>200</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="250">>250</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex flex-row-reverse" aria-label="{{ __('Page navigation example') }}" id="pagination">
+                    <div class="d-flex flex-row-reverse" aria-label="{{ __('Page navigation example') }}"
+                        id="pagination">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card bg-lightp-0 p-0 mt-3 col">
-        <div class="card-body p-0 col d-flex flex-column justify-content-between">
-            <table class="table C-table-list col C-courier-items-list m-0" id="items_table">
-                <thead>
-                    <tr class="C-list-item">
-                        <th class="custom d-none">
-                            <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
-                        </th>
-                        <th class="C-table-sort" data-sort="track_code" data-order="asc">
-                            {{ __('Track Code') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="picked_up" data-order="asc">
-                            {{ __('Picked Up') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="dropped_off" data-order="asc">
-                            {{ __('Dropped Off') }}
-                        </th>
-                        <th class="C-table-sort" data-sort="time_difference" data-order="asc">
-                            {{ __('Time Difference') }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="items_tbody"></tbody>
-            </table>
-            <div class="d-flex justify-content-between p-2">
-                <div class="d-flex justify-content-between" id="links_items">
-                    <div>
-                        {{ __('Show') }}
-                        <div class="btn-group dropup">
-                            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false" id="links_items_show">
-                                {{$pagination}}
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" data-value="1">1</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="2">2</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="5">5</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="10">10</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="25">25</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="50">50</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="100">>100</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="150">>150</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="200">>200</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-value="250">>250</a>
-                                </li>
-                            </ul>
+    <div class="p-0 col d-flex flex-column">
+        <div class="d-flex justify-content-between">
+            <span class="d-flex font-bold align-items-center text-lg "
+                style="font-weight: 700;">{{__('Courier ID') . ':'}}&nbsp;<span id="courierId"></span></span>
+            <form class="col-6" id="searchTrackCodeForm">
+                <input id="search" type="text" class="form-control " placeholder="{{ __('Search') }}"
+                    aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
+            </form>
+        </div>
+        <div class="card bg-lightp-0 p-0 mt-3 flex-grow-1">
+            <div class="card-body p-0 col d-flex flex-column justify-content-between">
+                <table class="table C-table-list col C-courier-items-list m-0" id="items_table">
+                    <thead>
+                        <tr class="C-list-item">
+                            <th class="custom d-none">
+                                <input type="checkbox" id="checkall" onclick="setAllCheckboxes(this);">
+                            </th>
+                            <th class="C-table-sort" data-sort="track_code" data-order="asc">
+                                {{ __('Track Code') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="picked_up" data-order="asc">
+                                {{ __('Picked Up') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="dropped_off" data-order="asc">
+                                {{ __('Dropped Off') }}
+                            </th>
+                            <th class="C-table-sort" data-sort="time_difference" data-order="asc">
+                                {{ __('Time Difference') }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="items_tbody"></tbody>
+                </table>
+                <div class="d-flex justify-content-between p-2">
+                    <div class="d-flex justify-content-between" id="links_items">
+                        <div>
+                            {{ __('Show') }}
+                            <div class="btn-group dropup">
+                                <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false" id="links_items_show">
+                                    {{$pagination}}
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" data-value="1">1</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="2">2</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="5">5</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="10">10</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="25">25</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="50">50</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="100">>100</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="150">>150</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="200">>200</a>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#" data-value="250">>250</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}"
+                        id="items_pagination"></div>
                 </div>
-                <div class="d-flex flex-row-reverse p-2" aria-label="{{ __('Page navigation example') }}"
-                    id="items_pagination"></div>
-            </div>
 
+            </div>
         </div>
     </div>
 
