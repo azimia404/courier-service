@@ -17,6 +17,6 @@ class CourierSeeder extends Seeder
      */
     public function run()
     {
-        Courier::factory()->count(10)->create();
+        Courier::factory()->count(1)->create();
     }
 }

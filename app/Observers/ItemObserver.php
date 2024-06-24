@@ -16,10 +16,6 @@ class ItemObserver
     public function created(Item $item)
     {
         //
-        $courier = Courier::find($item->courier_id);
-        $courier->update([$item->status => $courier->value($item->status) + 1]);
-        $courier->save();
-        dump("WORKS");
     }
 
     /**
@@ -31,10 +27,6 @@ class ItemObserver
     public function updated(Item $item)
     {
         //
-        $courier = Courier::find($item->courier_id);
-        $courier->update([$item->status => $courier->value($item->status) + 1]);
-        $courier->save();
-        dump("U{DATES");
     }
 
     /**
