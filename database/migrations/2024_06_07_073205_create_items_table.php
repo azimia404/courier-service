@@ -21,6 +21,7 @@ class CreateItemsTable extends Migration
             $table->foreign('courier_id')->references('id')->on('couriers');
 
             $table->string('track_code', 20)->unique(true);
+            $table->enum('status', ['delivered', 'in_progress', 'failed']);
             $table->dateTime('picked_up');
             $table->dateTime('dropped_off')->nullable(true)->default(null);
 

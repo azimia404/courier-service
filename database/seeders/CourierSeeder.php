@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Courier;
 use Illuminate\Support\Str;
 
 class CourierSeeder extends Seeder
@@ -16,6 +17,6 @@ class CourierSeeder extends Seeder
      */
     public function run()
     {
-        
+        Courier::factory()->count(10)->create();
     }
 }

@@ -15,9 +15,9 @@ class CourierFactory extends Factory
     {
         return [
             'name' => "GED".random_int(0,9).random_int(0,9).random_int(0,9).random_int(0,9).random_int(0,9).random_int(0,9),
-            'delivered' => random_int(1,10),
-            'in_progress' => random_int(1,10),
-            'failed' => random_int(1,10),
+            'delivered' => 0,
+            'in_progress' => 0,
+            'failed' => 0,
         ];
     }
 }
