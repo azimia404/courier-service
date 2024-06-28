@@ -28,6 +28,10 @@ class FilterCouriersRequest extends FormRequest
             "nameCourier"=> "",
             "delivered"=> "",
             "in_progress"=> "",
+            "sort" => "",
+            "order" => "",
+            "page"  => "",
+            "pagination" => "",
             "failed"=> "",
         ];
     }

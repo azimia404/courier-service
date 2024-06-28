@@ -114,47 +114,6 @@
 
     }
 
-    function correctItemShow() {
-        $('#links_items a').on('click', function (e) {
-            e.preventDefault();
-            let paginationItems = $(this).data('value');
-
-            let data = checkURLData({ paginationItems: paginationItems });
-
-
-            $.ajax({
-                url: '{{ route('courier.items.search') }}',
-                type: 'GET',
-                data: {
-                    track_code: data.trackCodeItem,
-                    courier_id: data.courierId,
-                    sortItem: data.sortItems,
-                    orderItem: data.orderItems,
-                    paginationItems: data.paginationItems,
-                    page_items: data.pageItems,
-                },
-                success: (response) => {
-                    console.log('#links_items a');
-                    console.dir(response);
-
-                    let rows = '';
-                    $.each(response.data, function (index, item) {
-                        rows += '<tr>';
-                        rows += '<td>' + item.track_code + '</td>';
-                        rows += '<td>' + (item.picked_up ? item.picked_up : "N/A") + '</td>';
-                        rows += '<td>' + (item.dropped_off ? item.dropped_off : "N/A") + '</td>';
-                        rows += '<td>' + "N/A" + '</td>';
-                        rows += '</tr>';
-                    });
-                    $('#items_tbody').html(rows);
-                    $('#items_pagination').html(response.linksHTML);
-                    $('#links_items_show').html(data.paginationItems);
-                    // correctItemShow();
-                    correctItemPaginationLinks();
-                }
-            });
-        });
-    }
     function checkURLData(data = {
         sortCouriers: null,
         orderCouriers: null,
@@ -205,7 +164,7 @@
         if (data.nameCourier == null && !(newData.nameCourier = url.searchParams.get("nameCourier"))) {
             newData.nameCourier = '';
         };
-        url.searchParams.set('nameCourier', newData.nameCourier || 5);
+        url.searchParams.set('nameCourier', newData.nameCourier || "");
 
         // Courier ID
         if (data.courierId == null && !(newData.courierId = url.searchParams.get("courierId"))) {
@@ -408,6 +367,37 @@
         });
     });
 
+    function correctItemShow() {
+        $('#links_items a').on('click', function (e) {
+            e.preventDefault();
+            let paginationItems = $(this).data('value');
+
+            let data = checkURLData({ paginationItems: paginationItems });
+
+
+            $.ajax({
+                url: '{{ route('courier.items.search') }}',
+                type: 'GET',
+                data: {
+                    track_code: data.trackCodeItem,
+                    courier_id: data.courierId,
+                    sortItem: data.sortItems,
+                    orderItem: data.orderItems,
+                    paginationItems: data.paginationItems,
+                    page_items: data.pageItems,
+                },
+                success: (response) => {
+                    console.log('#links_items a');
+                    console.dir(response);
+
+                    deployItemsList(response)
+                    $('#links_items_show').html(data.paginationItems);
+                    // correctItemShow();
+                    correctItemPaginationLinks();
+                }
+            });
+        });
+    }
     // Setting sort for items
     $(document).ready(function () {
         $('#pagination_couriers a').on('click', function (e) {

@@ -45,7 +45,7 @@ class CourierController extends Controller
         }
         // Sorting
         if (isset($data['sort']) && isset($data['order'])) {
-            $query->orderBy($data['order'], $data['sort']);
+            $query->orderBy($data['sort'], $data['order']);
         }
         // Pagination
         $pagination = $data['pagination'] ?? 5;
@@ -105,7 +105,7 @@ class CourierController extends Controller
         }
 
         if (isset($data['courier_id'])) {
-            $query->where('courier_id', '=', '%'.$data['courier_id'].'%');
+            $query->where('courier_id', '=', $data['courier_id']);
         }
         // Sorting
         if (isset($data['orderItem']) && isset($data['sortItem'])) {
