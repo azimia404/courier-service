@@ -56,22 +56,22 @@
         <nav class="C-sidebar bg-body-tertiary" id="sidebar">
             <input class="C-focuser" id="C-focuser" autofocus />
             <ul class="list-unstyled">
-                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('Home') }}</button></li>
-                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('Statuses') }}</button></li>
+                <li class=""><button class="btn w-100 rounded-0 C-button" type="button">{{ __('Home') }}</button></li>
+                <li class=""><button class="btn w-100 rounded-0 C-button" type="button">{{ __('Statuses') }}</button></li>
                 <li class="">
                     <div class="dropdown">
-                        <button class="btn w-100 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        <button class="btn w-100 dropdown-toggle C-button rounded-0" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             {{ __('Dropdown button') }}
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">{{ __('Action') }}</a></li>
-                            <li><a class="dropdown-item" href="#">{{ __('Another action') }}</a></li>
-                            <li><a class="dropdown-item" href="#">{{ __('Something else here') }}</a></li>
+                            <li><a class="dropdown-item C-button" href="#">{{ __('Action') }}</a></li>
+                            <li><a class="dropdown-item C-button" href="#">{{ __('Another action') }}</a></li>
+                            <li><a class="dropdown-item C-button" href="#">{{ __('Something else here') }}</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class=""><button class="btn w-100 rounded-0" type="button">{{ __('External') }}</button></li>
+                <li class=""><button class="btn w-100 rounded-0 C-button" type="button">{{ __('External') }}</button></li>
             </ul>
         </nav>
         <main class="flex-grow-1">

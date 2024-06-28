@@ -440,13 +440,13 @@
     <div class="p-0 col d-flex flex-column">
         <div class="d-flex justify-content-between">
             <div class="col p-0">
-                <button type="button" class="btn btn-success">{{ __('Success') }}</button>
+                <!-- <button type="button" class="btn btn-success">{{ __('Success') }}</button>
                 <button type="button" class="btn btn-primary">{{ __('Activity') }}</button>
                 <button type="button" class="btn btn-secondary">{{ __('Import') }}</button>
-                <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button>
+                <button type="button" class="btn btn-primary">{{ __('Send SMS') }}</button> -->
             </div>
             <form class="col-6" id="searchCourierNameForm">
-                <input id="searchCourierName" type="text" class="form-control " placeholder="{{ __('Search') }}"
+                <input id="searchCourierName" type="text" class="form-control C-search-input" placeholder="{{ __('Search') }}"
                     aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
             </form>
         </div>
@@ -522,7 +522,7 @@
             <span class="d-flex font-bold align-items-center text-lg "
                 style="font-weight: 700;">{{__('Courier ID') . ':'}}&nbsp;<span id="courierId"></span></span>
             <form class="col-6" id="searchTrackCodeForm">
-                <input id="search" type="text" class="form-control " placeholder="{{ __('Search') }}"
+                <input id="search" type="text" class="form-control C-search-input" placeholder="{{ __('Search') }}"
                     aria-label="{{ __('Search') }}" aria-describedby="basic-addon1">
             </form>
         </div>
